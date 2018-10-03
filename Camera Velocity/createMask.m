@@ -38,6 +38,7 @@ maskedRGBImage = RGB;
 maskedRGBImage(repmat(~BW,[1 1 3])) = 0;
 
 %%%%%%BW = bwareaopen(BW, 1000);
+BW = bwpropfilt(BW, 'Area', [7000, inf]);
 BW = bwpropfilt(BW,'Area',1);
 BW = imfill(BW, 'holes');
 
