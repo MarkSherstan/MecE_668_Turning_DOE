@@ -1,6 +1,7 @@
 %% To do:
 % Write to .txt file
 % create plots
+% First instense... Dont want to track stationary blobs
 % test in a variety of videos
 
 clear all
@@ -36,14 +37,14 @@ while hasFrame(v)
         velx = deltaX * frameRate * scale;
         vely = deltaY * frameRate * scale;
 
-        fprintf('Velocity: %0.2f [mm/s]\tVel x: %0.2f [mm/s]\tVel y: %0.2f [mm/s]\n',vel,velx,vely)
+        fprintf('Velocity: %0.2f [cm/s]\tVel x: %0.2f [cm/s]\tVel y: %0.2f [cm/s]\n',vel,velx,vely)
+        frameOut = insertObjectAnnotation(frame, 'circle',[points(1) points(2), 50], cellstr(num2str(vel,'%2.2f')));
       else
         vel_pix = 0;
         vel = 0;
+        frameOut = frame;
     end
 
-    % Visualize the velocity and show a frame
-    frameOut = insertObjectAnnotation(frame, 'circle',[points(1) points(2), 50], cellstr(num2str(vel,'%2.2f')));
     imshow(frameOut)
 
     % Save data for next frame
