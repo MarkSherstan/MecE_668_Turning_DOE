@@ -29,8 +29,9 @@ void loop(){
 
     // Print / write data
     Serial.print("X: "); Serial.print(accel_x,10); Serial.print("  ");
-    Serial.print("Y: "); Serial.print(accel_y,10);  Serial.print("  ");
-    Serial.print("Z: "); Serial.println(accel_z,10);
+    Serial.print("Y: "); Serial.print(accel_y,10); Serial.print("  ");
+    Serial.print("Z: "); Serial.print(accel_z,10); Serial.print("  ");
+    Serial.print("Frequency: [Hz] "); Serial.println(1e6/(micros() - loop_timer));
 
     // Wait until the loop_timer reaches 4000us (250Hz) before starting the next loop
     while(micros() - loop_timer < 4000);
