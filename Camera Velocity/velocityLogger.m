@@ -32,7 +32,7 @@ while hasFrame(v)
         velx(i) = deltaX * frameRate * scale;
         vely(i) = deltaY * frameRate * scale;
 
-        fprintf('Velocity: %0.2f [cm/s]\tVel x: %0.2f [cm/s]\tVel y: %0.2f [cm/s]\n',vel(i),velx(i),vely(i))
+        fprintf('Vel: %0.2f\tVel x: %5.2f\tVel y: %5.2f\n',vel(i),velx(i),vely(i))
         frameOut = insertObjectAnnotation(frame, 'circle',[points(1) points(2), 50], cellstr(num2str(vel(i),'%2.2f')));
       else
         vel_pix = 0;
@@ -40,13 +40,16 @@ while hasFrame(v)
         frameOut = frame;
     end
 
-    imshow(frameOut)
+    %figure(3)
+    %imshow(frameOut)
+    %imshow(BW)
 
     % Save data for next frame
     oldPoints = points;
     i = i + 1;
 end
 
+figure(4)
 t = 1:i-1;
 plot(t,vel,t,velx,t,vely)
 title('Velocity vs Frame Number')
