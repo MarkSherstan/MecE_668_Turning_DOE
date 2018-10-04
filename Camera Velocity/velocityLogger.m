@@ -7,12 +7,12 @@ oldPoints = [];
 i = 1;
 
 % Read in video and process
-v = VideoReader('test.mp4');
+v = VideoReader('convert.mp4');
 frameRate = v.FrameRate;
 
 % Get scale from first frame
 frame = readFrame(v);
-[scale] = scale(frame,false);
+scale = scale(frame,false);
 
 % Loop through video frame by frame
 while hasFrame(v)
@@ -21,6 +21,10 @@ while hasFrame(v)
 
     stats = regionprops('table',BW,'Centroid');
     points = table2array(stats);
+
+    if isempty(points)
+      points = oldPoints;
+    end
 
     if ~isempty(oldPoints)
         deltaX = points(1) - oldPoints(1);
@@ -33,7 +37,7 @@ while hasFrame(v)
         vely(i) = deltaY * frameRate * scale;
 
         fprintf('Vel: %0.2f\tVel x: %5.2f\tVel y: %5.2f\n',vel(i),velx(i),vely(i))
-        frameOut = insertObjectAnnotation(frame, 'circle',[points(1) points(2), 50], cellstr(num2str(vel(i),'%2.2f')));
+        %frameOut = insertObjectAnnotation(frame, 'circle',[points(1) points(2), 50], cellstr(num2str(vel(i),'%2.2f')));
       else
         vel_pix = 0;
         vel = 0;
