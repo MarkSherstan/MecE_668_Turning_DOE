@@ -4,17 +4,21 @@
 #include <SPI.h>
 #include <SD.h>
 #include <Wire.h>
+#define FILE_BASE_NAME "Data"
+
+File myFile;
 
 const int chipSelect = 4;
+const uint8_t BASE_NAME_SIZE = sizeof(FILE_BASE_NAME) - 1;
+char fileName[] = FILE_BASE_NAME "00.csv";
 long acc_x, acc_y, acc_z;
 long loop_timer;
 long scaleFactor = 8192;
 double accel_x, accel_y, accel_z;
 
-File myFile;
 
 void setup() {
-  Serial.begin(57600);
+  //Serial.begin(57600);
 
   pinMode(2, OUTPUT);
 
@@ -25,6 +29,19 @@ void setup() {
   if (!SD.begin(chipSelect)) {
     digitalWrite(2, HIGH);
     while (1);
+  }
+
+  while (SD.exists(fileName)) {
+    if (fileName[BASE_NAME_SIZE + 1] != '9') {
+        fileName[BASE_NAME_SIZE + 1]++;
+    } else if (fileName[BASE_NAME_SIZE] != '9') {
+        fileName[BASE_NAME_SIZE + 1] = '0';
+        fileName[BASE_NAME_SIZE]++;
+    } else {
+        digitalWrite(2, HIGH);
+        while (1);
+      return;
+    }
   }
 
   digitalWrite(2, LOW);
@@ -43,9 +60,7 @@ void loop() {
   accel_y = (double)acc_y / (double)scaleFactor;
   accel_z = (double)acc_z / (double)scaleFactor;
 
-
-  myFile = SD.open("test.txt", FILE_WRITE);
-
+  myFile = SD.open(fileName, FILE_WRITE);
 
   if (myFile) {
     myFile.print(loop_timer); myFile.print(",");
