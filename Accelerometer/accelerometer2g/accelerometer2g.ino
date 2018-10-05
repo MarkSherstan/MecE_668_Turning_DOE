@@ -53,14 +53,14 @@ void loop(){
     //Read the raw acc data from MPU-6050
     read_mpu_6050_data();
 
-    // Convert to g force 
+    // Convert to g force
     accel_x = (double)acc_x / (double)scaleFactor;
     accel_y = (double)acc_y / (double)scaleFactor;
     accel_z = (double)acc_z / (double)scaleFactor;
 
-    // Print / write data 
+    // Print / write data
     Serial.print("X: "); Serial.print(accel_x,10); Serial.print("  ");
-    Serial.print("Y: "); Serial.print(accel_y,10);  Serial.print("  ");   
+    Serial.print("Y: "); Serial.print(accel_y,10);  Serial.print("  ");
     Serial.print("Z: "); Serial.println(accel_z,10);
 
     // Wait until the loop_timer reaches 4000us (250Hz) before starting the next loop
