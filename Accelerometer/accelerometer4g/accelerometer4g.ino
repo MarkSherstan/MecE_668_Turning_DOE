@@ -10,9 +10,9 @@ double accel_x, accel_y, accel_z;
 void setup() {
   Serial.begin(57600);
 
-  //Setup the registers of the MPU-6050 (500dfs / +/-2g) and start up
+  //Setup the registers of the MPU-6050 (+/- 4g) and start up
   setup_mpu_6050_registers();
-  
+
   //Reset the loop timer
   loop_timer = micros();
 }

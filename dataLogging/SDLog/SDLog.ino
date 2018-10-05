@@ -18,7 +18,7 @@ void setup() {
 
   pinMode(2, OUTPUT);
 
-  //Setup the registers of the MPU-6050 (500dfs / +/-2g) and start up
+  //Setup the registers of the MPU-6050 (+/- 4g) and start up
   setup_mpu_6050_registers();
 
   // see if the card is present and can be initialized:
