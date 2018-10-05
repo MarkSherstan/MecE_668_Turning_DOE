@@ -1,53 +1,40 @@
-// Based off Tom Igoe SD card datalogger example https://www.arduino.cc/en/Tutorial/Datalogger
+// Based off Tom Igoe SD card example https://www.arduino.cc/en/Tutorial/ReadWrite
 // Shield uses pins 4, 11, 12, 13
-// Use this???
 
 #include <SPI.h>
 #include <SD.h>
 const int chipSelect = 4;
-String fileName;
+File myFile;
 
 void setup() {
   Serial.begin(57600);
 
-  Serial.print("Initializing SD card...");
+  pinMode(2, OUTPUT);
 
   // see if the card is present and can be initialized:
   if (!SD.begin(chipSelect)) {
-    Serial.println("Card failed, or not present");
+    digitalWrite(2, HIGH);
+    while (1);
   }
 
-  Serial.println("card initialized.");
-
-  String fileName = "datalog" + String(int(random(1, 100))) + ".txt";
-  Serial.println(fileName);
+  digitalWrite(2, LOW);
 }
 
 
 void loop() {
-  // make a string for assembling the data to log:
-  String dataString = "";
+  myFile = SD.open("test.txt", FILE_WRITE);
 
-  // read three sensors and append to the string:
-  for (int analogPin = 0; analogPin < 3; analogPin++) {
-    int sensor = analogRead(analogPin);
-    dataString += String(sensor);
-    if (analogPin < 2) {
-      dataString += ",";
-    }
-  }
+  int sensorA0 = analogRead(A0);
+  int sensorA1 = analogRead(A1);
 
-  File dataFile = SD.open("test.txt", FILE_WRITE);
+  if (myFile) {
+    myFile.print(sensorA0); myFile.print(",");
+    myFile.println(sensorA1);
 
-  // if the file is available, write to it:
-  if (dataFile) {
-    dataFile.println(dataString);
-    dataFile.close();
-    // print to the serial port too:
-    Serial.println(dataString);
-  }
-  // if the file isn't open, pop up an error:
-  else {
-    Serial.println("error opening file");
+    myFile.close();
+
+    digitalWrite(2, LOW);
+  } else {
+    digitalWrite(2, HIGH);
   }
 }
