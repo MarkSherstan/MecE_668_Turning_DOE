@@ -7,11 +7,13 @@ oldPoints = [];
 i = 1;
 
 % Read in video and process
-v = VideoReader('convert.mp4');
+v = VideoReader('test.mp4');
 frameRate = v.FrameRate;
 
-% Get scale from first frame
-frame = readFrame(v);
+% Filter out initial capture and get scale from advanced frame
+for i = 1:15
+  frame = readFrame(v);
+end
 scale = scale(frame,false);
 
 % Loop through video frame by frame
