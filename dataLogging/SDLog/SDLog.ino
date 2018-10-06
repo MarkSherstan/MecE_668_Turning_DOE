@@ -18,6 +18,8 @@ double accel_x, accel_y, accel_z;
 
 
 void setup() {
+  Wire.begin();
+
   //Serial.begin(57600);
 
   pinMode(2, OUTPUT);
