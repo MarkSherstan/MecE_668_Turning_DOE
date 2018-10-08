@@ -1,12 +1,11 @@
-//Include I2C library
+//Include I2C library and declare variables
 #include <Wire.h>
 
 int gyro_x, gyro_y, gyro_z;
 long gyro_x_cal, gyro_y_cal, gyro_z_cal;
 long loop_timer;
-// Correct Variable??
 long scaleFactor = 65.5; // 250 deg/s --> 131, 500 deg/s --> 65.5, 1000 deg/s --> 32.8, 2000 deg/s --> 16.4
-double acceleration_x, acceleration_y, acceleration_z;
+double rotation_x, rotation_y, rotation_z;
 
 
 void setup() {
@@ -18,7 +17,7 @@ void setup() {
   setup_mpu_6050_registers();
 
   // Calculate offset and average values
-  for (int cal_int = 0; cal_int < 2000 ; cal_int ++){
+  for (int cal_int = 0; cal_int < 2500 ; cal_int ++){
     read_mpu_6050_data();
     gyro_x_cal += gyro_x;
     gyro_y_cal += gyro_y;
@@ -26,9 +25,9 @@ void setup() {
     delay(3);
   }
 
-  gyro_x_cal /= 2000;
-  gyro_y_cal /= 2000;
-  gyro_z_cal /= 2000;
+  gyro_x_cal /= 2500;
+  gyro_y_cal /= 2500;
+  gyro_z_cal /= 2500;
 
   //Reset the loop timer
   loop_timer = micros();
@@ -44,18 +43,22 @@ void loop(){
   gyro_y -= gyro_y_cal;
   gyro_z -= gyro_z_cal;
 
-  //Gyro angle calculations
-  //0.0000611 = 1 / (250Hz / 65.5)
-  angle_pitch += gyro_x * 0.0000611;
-  angle_roll += gyro_y * 0.0000611;
+  // Convert to instantaneous degrees per second
+  rotation_x = (double)gyro_x / (double)scaleFactor;
+  rotation_y = (double)gyro_y / (double)scaleFactor;
+  rotation_z = (double)gyro_z / (double)scaleFactor;
 
-  //0.000001066 = 0.0000611 * (3.142(PI) / 180degr) The Arduino sin function is in radians
-  angle_pitch += angle_roll * sin(gyro_z * 0.000001066);
-  angle_roll -= angle_pitch * sin(gyro_z * 0.000001066);
+  // Print / write data
+  Serial.print(loop_timer); Serial.print(",");
+  Serial.print(rotation_x, 7); Serial.print(",");
+  Serial.print(rotation_y, 7); Serial.print(",");
+  Serial.println(rotation_z, 7);
 
+  // Wait until the loop_timer reaches 4000us (250Hz) before next loop
   while(micros() - loop_timer < 4000);
   loop_timer = micros();
 }
+
 
 void read_mpu_6050_data(){
   //Subroutine for reading the raw gyro data
@@ -70,6 +73,7 @@ void read_mpu_6050_data(){
   gyro_y = Wire.read()<<8 | Wire.read();
   gyro_z = Wire.read()<<8 | Wire.read();
 }
+
 
 void setup_mpu_6050_registers(){
   //Activate the MPU-6050
