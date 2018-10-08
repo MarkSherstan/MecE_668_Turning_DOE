@@ -1,11 +1,11 @@
 //Include I2C library
 #include <Wire.h>
 
-//Declaring some global variables
 int gyro_x, gyro_y, gyro_z;
 long gyro_x_cal, gyro_y_cal, gyro_z_cal;
 long loop_timer;
-long scaleFactor = 65.5;
+// Correct Variable??
+long scaleFactor = 65.5; // 250 deg/s --> 131, 500 deg/s --> 65.5, 1000 deg/s --> 32.8, 2000 deg/s --> 16.4
 double acceleration_x, acceleration_y, acceleration_z;
 
 
@@ -14,7 +14,7 @@ void setup() {
 
   Serial.begin(57600);
 
-  //Setup the registers of the MPU-6050 (500dfs) and start up
+  //Setup the registers of the MPU-6050 and start up
   setup_mpu_6050_registers();
 
   // Calculate offset and average values
@@ -46,15 +46,15 @@ void loop(){
 
   //Gyro angle calculations
   //0.0000611 = 1 / (250Hz / 65.5)
-  angle_pitch += gyro_x * 0.0000611;                                   //Calculate the traveled pitch angle and add this to the angle_pitch variable
-  angle_roll += gyro_y * 0.0000611;                                    //Calculate the traveled roll angle and add this to the angle_roll variable
+  angle_pitch += gyro_x * 0.0000611;
+  angle_roll += gyro_y * 0.0000611;
 
   //0.000001066 = 0.0000611 * (3.142(PI) / 180degr) The Arduino sin function is in radians
-  angle_pitch += angle_roll * sin(gyro_z * 0.000001066);               //If the IMU has yawed transfer the roll angle to the pitch angel
-  angle_roll -= angle_pitch * sin(gyro_z * 0.000001066);               //If the IMU has yawed transfer the pitch angle to the roll angel
+  angle_pitch += angle_roll * sin(gyro_z * 0.000001066);
+  angle_roll -= angle_pitch * sin(gyro_z * 0.000001066);
 
-  while(micros() - loop_timer < 4000);                                 //Wait until the loop_timer reaches 4000us (250Hz) before starting the next loop
-  loop_timer = micros();                                               //Reset the loop timer
+  while(micros() - loop_timer < 4000);
+  loop_timer = micros();
 }
 
 void read_mpu_6050_data(){
@@ -78,9 +78,9 @@ void setup_mpu_6050_registers(){
   Wire.write(0x00);
   Wire.endTransmission();
 
-  //Configure the gyro (500dps full scale)
+  //Configure the gyro
   Wire.beginTransmission(0x68);
   Wire.write(0x1B);
-  Wire.write(0x08);
+  Wire.write(0x08); // 250 deg/s --> 0x00, 500 deg/s --> 0x08, 1000 deg/s --> 0x10, 2000 deg/s --> 0x18
   Wire.endTransmission();
 }
