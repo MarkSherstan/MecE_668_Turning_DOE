@@ -9,7 +9,7 @@ double accel_x, accel_y, accel_z;
 
 void setup() {
   Wire.begin();
-  
+
   Serial.begin(57600);
 
   //Setup the registers of the MPU-6050 (+/- 4g) and start up
