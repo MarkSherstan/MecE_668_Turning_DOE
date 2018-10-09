@@ -1,4 +1,4 @@
-function [a,w,t] = txtReader(filename,flag)
+function [a,w,t] = fileReader(filename,flag)
 % Feed in filename string and true/false for displaying plots
 % Receive accleration, angular velocity, and time/frequency
 
