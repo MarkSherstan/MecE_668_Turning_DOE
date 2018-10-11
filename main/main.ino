@@ -27,13 +27,13 @@ long gyro_x_cal = -106;
 long gyro_y_cal = 123;
 long gyro_z_cal = -142;
 
-// Other sensor variables
+// Other important variables
 long loop_timer;
+long loop_timer2;
 int temperature;
+int counter;
+int PWM = 1000;
 
-// Motor controls
-int val;
-int mapval;
 
 void setup(){
   Wire.begin();
@@ -74,6 +74,7 @@ void setup(){
 
   // Reset the loop timer
   loop_timer = micros();
+  loop_timer2 = micros();
 }
 
 void loop(){
@@ -114,10 +115,13 @@ void loop(){
     digitalWrite(2, HIGH);
   }
 
-  // Change this to loop to increase smoothly every 3 secounds?
-  val = analogRead(A0);
-  mapval = map(val, 0, 1023,1000,2000);
-  esc.writeMicroseconds(mapval);
+  // Increase PWM signal every second and write to ESC
+  if (micros() - loop_timer2) > 1000
+    loop_timer2 = micros();
+    PWM = PWM + 20;
+  end
+
+  esc.writeMicroseconds(PWM);
 
   // Wait until the loop_timer reaches 4000us (250Hz) before starting the next loop
   while (micros() - loop_timer < 4000);
