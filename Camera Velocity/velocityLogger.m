@@ -57,7 +57,7 @@ function [vel, velx, vely] = velocityLogger(filename,flag)
       disp(i)   % Show just i to speed up processing time
   end
 
-  sliceLocation = dataSlicer(mag,50); % 50 Extra points
+  sliceLocation = dataSlicer(vel,50); % 50 Extra points
   vel(1:sliceLocation) = [];
   velx(1:sliceLocation) = [];
   vely(1:sliceLocation) = [];
