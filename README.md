@@ -8,10 +8,10 @@ Values retrieved from the MPU-6050 Register Map and Descriptions Revision 4.2 lo
 
 | Accelerometer | Sensitivity   | Gyroscope     | Sensitivity   | Hexadecimal   |  Binary       |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| +/- 2g	      | 2048	        | 250 deg/s     | 131           | 0x00	        | 00000000      |
-| +/- 4g	      | 4096	        | 500 deg/s     | 65.5          | 0x08	        | 00001000      |
-| +/- 8g        | 8192	        | 1000 deg/s    | 32.8          | 0x10	        | 00010000      |
-| +/- 16g	      | 16384	        | 2000 deg/s    | 16.4          | 0x18	        | 00011000      |
+| +/- 2g	      | 16384	        | 250 deg/s     | 131           | 0x00	        | 00000000      |
+| +/- 4g	      | 8192 	        | 500 deg/s     | 65.5          | 0x08	        | 00001000      |
+| +/- 8g        | 4096	        | 1000 deg/s    | 32.8          | 0x10	        | 00010000      |
+| +/- 16g	      | 2048	        | 2000 deg/s    | 16.4          | 0x18	        | 00011000      |
 
 ## Arduino
 * Accelerometer --> Outputs raw accelerometer values [acceleration in g force]

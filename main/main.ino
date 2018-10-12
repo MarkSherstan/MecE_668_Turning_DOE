@@ -17,7 +17,7 @@ char fileName[] = FILE_BASE_NAME "00.csv";
 // Accelerometer
 long acc_x, acc_y, acc_z;
 double accel_x, accel_y, accel_z;
-long scaleFactorAccel = 8192; // 2g --> 2048, 4g --> 4096, 8g --> 8192, 16g --> 16384
+long scaleFactorAccel = 8192; // 2g --> 16384 , 4g --> 8192 , 8g --> 4096, 16g --> 2048
 
 // Gyroscope --> Get offsets from calibrateGyro.ino
 int gyro_x, gyro_y, gyro_z;

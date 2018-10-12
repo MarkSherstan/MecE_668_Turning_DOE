@@ -3,7 +3,7 @@
 
 long acc_x, acc_y, acc_z;
 long loop_timer;
-long scaleFactor = 8192; // 2g --> 2048, 4g --> 4096, 8g --> 8192, 16g --> 16384
+long scaleFactor = 8192; // 2g --> 16384 , 4g --> 8192 , 8g --> 4096, 16g --> 2048
 double accel_x, accel_y, accel_z;
 
 
