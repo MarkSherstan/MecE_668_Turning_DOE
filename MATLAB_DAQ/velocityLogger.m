@@ -1,4 +1,4 @@
-function [vel, velx, vely] = velocityLogger(filename,flag)
+function [vel, velx, vely, posX, posY] = velocityLogger(filename,flag)
 
   % Declare variables
   oldPoints = [];
@@ -15,7 +15,7 @@ function [vel, velx, vely] = velocityLogger(filename,flag)
   % scale = scale(frame,false);
   % 30 fps --> 0.029464206496742
   % 240 fps --> 0.048056789348528
-  scale = 0.029464206496742;
+  scale = 0.048056789348528;
 
   % Loop through video frame by frame
   while hasFrame(v)
@@ -52,6 +52,8 @@ function [vel, velx, vely] = velocityLogger(filename,flag)
       %imshow(BW)
 
       % Save data for next frame
+      posX(i) = points(1) * scale;
+      posY(i) = points(2) * scale;
       oldPoints = points;
       i = i + 1;
       disp(i)   % Show just i to speed up processing time
@@ -61,6 +63,8 @@ function [vel, velx, vely] = velocityLogger(filename,flag)
   vel(1:sliceLocation) = [];
   velx(1:sliceLocation) = [];
   vely(1:sliceLocation) = [];
+  posX(1:sliceLocation) = [];
+  posY(1:sliceLocation) = [];
 
   if flag == true
     figure(4)
@@ -70,6 +74,13 @@ function [vel, velx, vely] = velocityLogger(filename,flag)
     legend('Velocity','Vel_x','Vel_y')
     xlabel('Frame')
     ylabel('Velocity [cm/s]')
+
+    figure(5)
+    plot(posX,posY)
+    title('Position Plot')
+    xlabel('x position [cm]')
+    ylabel('y position [cm]')
+    axis equal
   end
 
 end
