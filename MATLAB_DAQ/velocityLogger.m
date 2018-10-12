@@ -5,17 +5,8 @@ function [vel, pos] = velocityLogger(filename,extraPoints,scale)
   i = 1;
 
   % Read in video and process
-  v = VideoReader(filename);  % '00.265.mp4'
+  v = VideoReader(filename);
   frameRate = v.FrameRate;
-
-  % Filter out initial capture and get scale from advanced frame
-  % for i = 1:15
-  %   frame = readFrame(v);
-  % end
-  % scale = scale(frame,false);
-  % 30 fps --> 0.029464206496742
-  % 240 fps --> 0.048056789348528
-  scale = 0.048056789348528;
 
   % Loop through video frame by frame
   while hasFrame(v)
@@ -47,7 +38,7 @@ function [vel, pos] = velocityLogger(filename,extraPoints,scale)
           frameOut = frame;
       end
 
-      %figure(3)
+      %figure(10)
       %imshow(frameOut)
       %imshow(BW)
 
@@ -56,10 +47,10 @@ function [vel, pos] = velocityLogger(filename,extraPoints,scale)
       pos.y(i) = points(2) * scale;
       oldPoints = points;
       i = i + 1;
-      fprintf('%d\n',i)   % Show just i to speed up processing time
+      fprintf('%d\n',i)
   end
 
-  sliceLocation = dataSlicer(vel.mag,extraPoints); % 50 Extra points
+  sliceLocation = dataSlicer(vel.mag,extraPoints);
   vel.mag(1:sliceLocation) = [];
   vel.x(1:sliceLocation) = [];
   vel.y(1:sliceLocation) = [];
