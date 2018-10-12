@@ -1,4 +1,4 @@
-function [a,w,t] = fileReader(filename,flag)
+function [a,w,t] = fileReader(filename,flag,extraPoints)
 % Feed in filename string and true/false for displaying plots
 % Receive accleration, angular velocity, and time/frequency
 
@@ -18,7 +18,7 @@ function [a,w,t] = fileReader(filename,flag)
   end
 
   mag = sqrt(a.x.^2 + a.y.^2 + a.z.^2);
-  sliceLocation = dataSlicer(mag,50); % 50 Extra points
+  sliceLocation = dataSlicer(mag,extraPoints);
 
   t.microSeconds(1:sliceLocation) = [];
   t.seconds(1:sliceLocation) = [];
