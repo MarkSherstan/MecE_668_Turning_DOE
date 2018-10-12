@@ -1,4 +1,4 @@
-function [BW,maskedRGBImage] = createMask(RGB)
+function [BW] = createMask(RGB)
 %createMask  Threshold RGB image using auto-generated code from colorThresholder app.
 %  [BW,MASKEDRGBIMAGE] = createMask(RGB) thresholds image RGB using
 %  auto-generated code from the colorThresholder app. The colorspace and
@@ -26,19 +26,12 @@ channel3Min = 17.000;
 channel3Max = 106.000;
 
 % Create mask based on chosen histogram thresholds
-sliderBW = (I(:,:,1) >= channel1Min ) & (I(:,:,1) <= channel1Max) & ...
+BW = (I(:,:,1) >= channel1Min ) & (I(:,:,1) <= channel1Max) & ...
     (I(:,:,2) >= channel2Min ) & (I(:,:,2) <= channel2Max) & ...
     (I(:,:,3) >= channel3Min ) & (I(:,:,3) <= channel3Max);
-BW = sliderBW;
 
-% Initialize output masked image based on input image.
-maskedRGBImage = RGB;
-
-% Set background pixels where BW is false to zero.
-maskedRGBImage(repmat(~BW,[1 1 3])) = 0;
-
-%%%%%%BW = bwareaopen(BW, 1000);
-BW = bwpropfilt(BW, 'Area', [7000, inf]);
+% Further BW filtering
+% BW = bwpropfilt(BW, 'Area', [7000, inf]);
 BW = bwpropfilt(BW,'Area',1);
 BW = imfill(BW, 'holes');
 
