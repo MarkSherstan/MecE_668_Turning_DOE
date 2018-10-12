@@ -1,7 +1,6 @@
-function [vel, pos] = velocityLogger(filename,extraPoints,scale)
+function [angularV, instantV, pos] = velocityLogger(filename,extraPoints,scale)
 
   % Declare variables
-  oldPoints = [];
   i = 1;
 
   % Read in video and process
@@ -16,55 +15,56 @@ function [vel, pos] = velocityLogger(filename,extraPoints,scale)
       stats = regionprops('table',BW,'Centroid');
       points = table2array(stats);
 
-      if isempty(points)
-        points = oldPoints;
-      end
+      % Save centroid position data
+      pos.x(i) = points(1);
+      pos.y(i) = points(2);
 
-      if ~isempty(oldPoints)
-          deltaX = points(1) - oldPoints(1);
-          deltaY = points(2) - oldPoints(2);
-          deltaTot = sqrt(deltaX^2 + deltaY^2);
-
-          % pixels/frame * frame/seconds * cm/pixel
-          vel.mag(i) = deltaTot * frameRate * scale;
-          vel.x(i) = deltaX * frameRate * scale;
-          vel.y(i) = deltaY * frameRate * scale;
-
-          %fprintf('vel.mag: %0.2f\tVel x: %5.2f\tVel y: %5.2f\n',vel.mag(i),vel.x(i),vel.y(i))
-          %frameOut = insertObjectAnnotation(frame, 'circle',[points(1) points(2), 50], cellstr(num2str(vel.mag(i),'%2.2f')));
-        else
-          vel_pix = 0;
-          vel.mag = 0;
-          frameOut = frame;
-      end
-
+      % Display video if required
       %figure(10)
-      %imshow(frameOut)
+      %imshow(frame)
       %imshow(BW)
 
-      % Save data for next frame
-      pos.x(i) = points(1) * scale;
-      pos.y(i) = points(2) * scale;
-      oldPoints = points;
+      % Counter
       i = i + 1;
       fprintf('%d\n',i)
   end
 
-  sliceLocation = dataSlicer(vel.mag,extraPoints);
-  vel.mag(1:sliceLocation) = [];
-  vel.x(1:sliceLocation) = [];
-  vel.y(1:sliceLocation) = [];
+  % Calculate angular and instantaneous velocity
+  [angularV, instantV] = variousVCalc(pos,frameRate,scale);
+
+  % Get rid of usless data
+  sliceLocation = dataSlicer(angularV,extraPoints);
+  angularV(1:sliceLocation) = [];
+  instantV(1:sliceLocation) = [];
   pos.x(1:sliceLocation) = [];
   pos.y(1:sliceLocation) = [];
 
 end
 
 
-function [sliceLocation] = dataSlicer(mag,extraPoints)
+function [angularV, instantV] = variousVCalc(pos,frameRate,scale)
+  % Center data at 0
+  centerX = mean(pos.x);
+  centerY = mean(pos.y);
+  positionX = pos.x - centerX;
+  positionY = pos.y - centerY;
+
+  for i = 1:length(positionX)-1
+    % angle/frame * frame/seconds * cm/pixel --> Is this correct???
+    angularV(i) = (tan(positionY(i+1)/positionX(i+1)) - tan(positionY(i)/positionX(i)))/frameRate;
+
+    % pixels/frame * frame/seconds * cm/pixel --> Is this correct???
+    instantV(i) = angularV(i) * sqrt(positionX(i)^2 + positionY(i)^2);
+  end
+
+end
+
+
+function [sliceLocation] = dataSlicer(angularV,extraPoints)
   counter = 0;
 
-  for i = 1:length(mag)
-    if mag(i) > 1.5
+  for i = 1:length(angularV)
+    if angularV(i) > 1.5
       break
     end
 
