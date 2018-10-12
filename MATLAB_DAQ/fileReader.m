@@ -1,4 +1,4 @@
-function [a,w,t] = fileReader(filename,flag,extraPoints)
+function [a,w,t] = fileReader(filename,extraPoints)
 % Feed in filename string and true/false for displaying plots
 % Receive accleration, angular velocity, and time/frequency
 
@@ -30,39 +30,7 @@ function [a,w,t] = fileReader(filename,flag,extraPoints)
   w.x(1:sliceLocation) = [];
   w.y(1:sliceLocation) = [];
   w.z(1:sliceLocation) = [];
-
-  if flag == true
-    figure(1)
-    plot(t.seconds,a.x,t.seconds,a.y,t.seconds,a.z)
-    title('Acceleration as a function of Time')
-    legend('a_x','a_y','a_z')
-    xlabel('Time (s)')
-    ylabel('Acceleration [g]')
-
-
-    figure(2)
-    plot(t.seconds,w.x,t.seconds,w.y,t.seconds,w.z)
-    title('Angular Velocity as a function of Time')
-    legend('w_x','w_y','w_z')
-    xlabel('Time (s)')
-    ylabel('Angular Velocity [deg/s]')
-
-
-    figure(3)
-    title('Acceleration and Angular Velocity as a function of Time')
-    xlabel('Time (s)')
-
-    yyaxis left
-    a = plot(t.seconds,a.x,'-r',t.seconds,a.y,'-g',t.seconds,a.z,'-b');
-    ylabel('Acceleration [g]')
-
-    yyaxis right
-    b = plot(t.seconds,w.x,'--r',t.seconds,w.y,'--g',t.seconds,w.z,'--b');
-    ylabel('Angular Velocity [deg/s]')
-
-    Leg = legend([a; b], {'a_x','a_y','a_z','w_x','w_y','w_z'});
-  end
-
+  
 end
 
 function [sliceLocation] = dataSlicer(mag,extraPoints)

@@ -1,4 +1,4 @@
-function [vel, pos] = velocityLogger(filename,flag,extraPoints)
+function [vel, pos] = velocityLogger(filename,extraPoints)
 
   % Declare variables
   oldPoints = [];
@@ -56,7 +56,7 @@ function [vel, pos] = velocityLogger(filename,flag,extraPoints)
       pos.y(i) = points(2) * scale;
       oldPoints = points;
       i = i + 1;
-      disp(i)   % Show just i to speed up processing time
+      fprintf('%d\n',i)   % Show just i to speed up processing time
   end
 
   sliceLocation = dataSlicer(vel.mag,extraPoints); % 50 Extra points
@@ -65,23 +65,6 @@ function [vel, pos] = velocityLogger(filename,flag,extraPoints)
   vel.y(1:sliceLocation) = [];
   pos.x(1:sliceLocation) = [];
   pos.y(1:sliceLocation) = [];
-
-  if flag == true
-    figure(4)
-    t = 1:length(vel.mag);
-    plot(t,vel.mag,t,vel.x,t,vel.y)
-    title('Velocity vs Frame Number')
-    legend('Velocity','Vel_x','Vel_y')
-    xlabel('Frame')
-    ylabel('Velocity [cm/s]')
-
-    figure(5)
-    plot(pos.x,pos.y)
-    title('Position Plot')
-    xlabel('x position [cm]')
-    ylabel('y position [cm]')
-    axis equal
-  end
 
 end
 
