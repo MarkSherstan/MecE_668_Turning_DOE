@@ -16,7 +16,11 @@ toc
 
 
 tic
+<<<<<<< HEAD
 [vel, pos] = velocityLogger(videoFileName,extraPoints,scale);
+=======
+[vel, pos] = velocityLogger(videoFileName,extraPoints);
+>>>>>>> 7f0dbcdea1d30362e30fa246ff9b02f41bde7a62
 toc
 
 
