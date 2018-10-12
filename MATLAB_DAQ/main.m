@@ -28,3 +28,21 @@ toc
 tic
 plotter(vel, pos, a, w, t)
 toc
+
+
+%% This is just some stuff
+% v = wr
+centerX = mean(pos.x);
+centerY = mean(pos.y);
+
+sortX = sort(pos.x);
+sortY = sort(pos.y);
+
+radiusX = centerX - mean(sortX(1:10));
+radiusY = centerY - mean(sortY(1:10));
+
+radius = (radiusX + radiusY)/2;
+
+w = mean(vel.mag./radius);
+
+rpm = w*60;
