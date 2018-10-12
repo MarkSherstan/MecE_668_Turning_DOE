@@ -30,7 +30,7 @@ function [a,w,t] = fileReader(filename,extraPoints)
   w.x(1:sliceLocation) = [];
   w.y(1:sliceLocation) = [];
   w.z(1:sliceLocation) = [];
-  
+
 end
 
 function [sliceLocation] = dataSlicer(mag,extraPoints)
@@ -40,7 +40,7 @@ function [sliceLocation] = dataSlicer(mag,extraPoints)
   counter = 0;
 
   for i = 1:length(mag)
-    if abs((M2(i) - M4(i)) / (M4(i))) > 0.1
+    if abs((M2(i) - M4(i)) / (M4(i))) > 0.08
       break
     end
     counter = counter + 1;

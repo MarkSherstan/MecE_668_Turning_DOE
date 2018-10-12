@@ -1,4 +1,4 @@
-function [vel, pos] = velocityLogger(filename,extraPoints)
+function [vel, pos] = velocityLogger(filename,extraPoints,scale)
 
   % Declare variables
   oldPoints = [];
@@ -73,7 +73,7 @@ function [sliceLocation] = dataSlicer(mag,extraPoints)
   counter = 0;
 
   for i = 1:length(mag)
-    if mag(i) > 5
+    if mag(i) > 1.5
       break
     end
 
