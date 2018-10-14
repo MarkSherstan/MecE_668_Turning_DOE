@@ -22,14 +22,11 @@ pos = positionLogger(videoFileName);
 a.y = cleanUpFreq(a.y,mean(t.frequency),4);
 
 % Match up data
-[a,w,t,pos] = dataSlicer(a,w,t,pos,extraPoints);
+[a,w,t,pos] = dataSlicer(a,w,t,pos);
 
 % Calculate angles and velocitys
-[angleDeltaRad, angleRad, p] = angleVelCalc(pos, 1, 1400, 10, initialCaptureRate);
-close all
-
-% Cut off ends of data? --> Find where the car slipped
-
+[angleDeltaRad, angleRad, y] = angleVelCalc(pos, 20, initialCaptureRate);
 
 % Plot the results
-plotter(angleDeltaRad, angleRad, pos, a, w, t, p, initialCaptureRate)
+close all
+plotter(angleDeltaRad, angleRad, pos, a, w, t, y, initialCaptureRate)
