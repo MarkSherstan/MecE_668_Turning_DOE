@@ -1,4 +1,4 @@
-function [pos] = positionLogger(filename, extraPoints)
+function [pos] = positionLogger(filename)
   tic
   % Read in video and process and initialize counter
   v = VideoReader(filename);
