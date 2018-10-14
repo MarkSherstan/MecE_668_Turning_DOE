@@ -1,13 +1,14 @@
-function [] = plotter(angleDeltaRad, angleRad, pos, a, w, t, p, initialCaptureRate)
+function [] = plotter(angleDeltaRad, angleRad, pos, a, w, t, y, initialCaptureRate)
 
 figure(1)
 tt = (1:length(angleDeltaRad))/initialCaptureRate;
-yPoly = polyval(p,tt);
-plot(tt,angleDeltaRad,'o',tt,yPoly,'-k')
-title('Change in Angle (radians) vs Time')
+hold on
+plot(tt,angleDeltaRad,'o')
+plot(y,'-k')
+title('Angular Velocity vs Time')
 xlabel('Time (s)')
 ylabel('Angular Velocity [rad/s]')
-
+hold off
 
 figure(2)
 plot(pos.x,pos.y)
@@ -56,7 +57,7 @@ leftA = plot(ttt,a.x,'-r',ttt,a.y,'-g',ttt,a.z,'-b');
 ylabel('Acceleration [g]')
 
 yyaxis right
-rightW = plot(tt,yPoly,'--k');
+rightW = plot(y,'-k');
 ylabel('Angular Velocity')
 
 Leg = legend([leftA; rightW], {'a_x','a_y','a_z','w'});
@@ -70,7 +71,7 @@ leftA = plot(ttt,w.x,'-r',ttt,w.y,'-g',ttt,w.z,'-b');
 ylabel('Angular Velocity Sensor [deg/s]')
 
 yyaxis right
-rightW = plot(tt,yPoly,'--k');
+rightW = plot(y,'-k');
 ylabel('Angular Velocity Vehicle')
 
 title('Angular Velocity Vehicle and Sensor')
