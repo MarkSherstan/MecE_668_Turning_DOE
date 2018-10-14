@@ -19,7 +19,7 @@ long scaleFactorAccel = 8192; // 2g --> 16384 , 4g --> 8192 , 8g --> 4096, 16g -
 // Gyroscope --> Get offsets from calibrateGyro.ino
 int gyro_x, gyro_y, gyro_z;
 double rotation_x, rotation_y, rotation_z;
-long scaleFactorGyro = 65.5; // 250 deg/s --> 131, 500 deg/s --> 65.5, 1000 deg/s --> 32.8, 2000 deg/s --> 16.4
+long scaleFactorGyro = 32.8; // 250 deg/s --> 131, 500 deg/s --> 65.5, 1000 deg/s --> 32.8, 2000 deg/s --> 16.4
 long gyro_x_cal = -106;
 long gyro_y_cal = 123;
 long gyro_z_cal = -142;
@@ -146,6 +146,6 @@ void setup_mpu_6050_registers() {
   // Configure the gyro
   Wire.beginTransmission(0x68);
   Wire.write(0x1B);
-  Wire.write(0x08); // 250 deg/s --> 0x00, 500 deg/s --> 0x08, 1000 deg/s --> 0x10, 2000 deg/s --> 0x18
+  Wire.write(0x10); // 250 deg/s --> 0x00, 500 deg/s --> 0x08, 1000 deg/s --> 0x10, 2000 deg/s --> 0x18
   Wire.endTransmission();
 }

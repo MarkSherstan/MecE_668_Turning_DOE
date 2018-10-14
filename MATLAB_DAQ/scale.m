@@ -1,6 +1,12 @@
-function [out, red, blue, green] = scale(I,flag)
+function [out, red, blue, green] = scale(filename,flag)
 %SCALE   Load in image "I" with red, green, and blue calibration blobs. Toggle
 % visuals with either true or false for flag. Units in [cm / pixel].
+
+  % Filter out initial capture and get scale from advanced frame
+  v = VideoReader(filename);
+  for i = 1:60
+    I = readFrame(v);
+  end
 
   % Actual center to center distance of blobs
   red.c2c = 10;       % cm
