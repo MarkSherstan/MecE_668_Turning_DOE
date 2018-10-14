@@ -1,4 +1,4 @@
-function [dataOut] = cleanUpFreq(acc,freq)
+function [dataOut] = cleanUpFreq(acc,freq,cutOffFreq)
 
 % Set up starting variables
 Fs = freq;
@@ -25,12 +25,12 @@ xlabel('f (Hz)')
 ylabel('|P1(f)|')
 
 % Design a 6th order butterworth filter based off the frequnecy domain plot
-fc = 0.5; %                                <----              Change this value
+fc = cutOffFreq; %                                <----              Change this value
 fs = freq;
 [b,a] = butter(6,fc/(fs/2));
 
 dataOut = filter(b,a,acc);
 
 % Plot the filtered data back in the time domain
-figure(4)
+figure(3)
 plot(dataOut)
