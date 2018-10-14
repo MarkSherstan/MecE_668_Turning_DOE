@@ -61,3 +61,18 @@ ylabel('Angular Velocity')
 
 Leg = legend([leftA; rightW], {'a_x','a_y','a_z','w'});
 xlabel('Time (s)')
+
+
+figure(7)
+
+yyaxis left
+leftA = plot(ttt,w.x,'-r',ttt,w.y,'-g',ttt,w.z,'-b');
+ylabel('Angular Velocity Sensor [deg/s]')
+
+yyaxis right
+rightW = plot(tt,yPoly,'--k');
+ylabel('Angular Velocity Vehicle')
+
+title('Angular Velocity Vehicle and Sensor')
+Leg = legend([leftA; rightW], {'w_x','w_y','w_z','w'});
+xlabel('Time (s)')
