@@ -1,10 +1,10 @@
-function [] = plotter(angularV, instantV, pos, a, w, t, angularVResample)
+function [] = plotter(angleDeltaRad, angleRad, pos, a, w, t, p)
 
 figure(1)
-tt = 1:length(angularV);
-plot(tt,angularV) %tt,instantV
-title('Angular Velocity vs Frame Number') % and Instantaneous
-%legend('Vel_x','Vel_y')
+tt = 1:length(angleDeltaRad);
+y = polyval(p,tt);
+plot(tt,angleDeltaRad,'o',tt,y,'-k')
+title('Change in angle radians vs Frame Number')
 xlabel('Frame')
 ylabel('Angular Velocity [rad/s]')
 
@@ -49,13 +49,13 @@ Leg = legend([leftA; rightW], {'a_x','a_y','a_z','w_x','w_y','w_z'});
 
 
 
-figure(6)
-xaxis = 1:length(a.x);
-
-yyaxis left
-a = plot(xaxis,a.x,'-r',xaxis,a.y,'-g',xaxis,a.z,'-b');
-ylabel('Acceleration [g]')
-
-yyaxis right
-b = plot(xaxis,angularVResample,'--k');
-ylabel('Angular Velocity')
+% figure(6)
+% xaxis = 1:length(a.x);
+%
+% yyaxis left
+% a = plot(xaxis,a.x,'-r',xaxis,a.y,'-g',xaxis,a.z,'-b');
+% ylabel('Acceleration [g]')
+%
+% yyaxis right
+% b = plot(xaxis,angularVResample,'--k');
+% ylabel('Angular Velocity')
