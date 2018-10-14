@@ -1,4 +1,4 @@
-function [angleDeltaRad, angleRad, p] = angleVelCalc(pos, lowerRange, upperRange, avgPoints)
+function [angleDeltaRad, angleRad, p] = angleVelCalc(pos, lowerRange, upperRange, avgPoints, initialCaptureRate)
 
   % Smooth the x and y data with a middle point average
   posx = pos.x(1:end);
@@ -14,11 +14,14 @@ function [angleDeltaRad, angleRad, p] = angleVelCalc(pos, lowerRange, upperRange
   ylabel('y position')
   axis equal
 
+  % Prepare x axis
+  count = 1:length(posx);
+  t = count/initialCaptureRate;
+
   % Plot X and Y data
   figure(2)
   subplot(3,1,1)
-  count = 1:length(posx);
-  plot(count,posx,count,posy)
+  plot(t,posx,t,posy)
   title('X and Y Position')
   xlabel('time')
   ylabel('position')
@@ -42,7 +45,7 @@ function [angleDeltaRad, angleRad, p] = angleVelCalc(pos, lowerRange, upperRange
 
   % Plot the angles
   subplot(3,1,2)
-  plot(angleRad)
+  plot(t,angleRad)
   xlabel('time')
   ylabel('angle (radians)')
 
@@ -56,8 +59,10 @@ function [angleDeltaRad, angleRad, p] = angleVelCalc(pos, lowerRange, upperRange
     end
   end
 
+  angleDeltaRad = angleDeltaRad*initialCaptureRate;
+
   % Fit data with a curve
-  x = 1:length(angleDeltaRad);
+  x = (1:length(angleDeltaRad))/initialCaptureRate;
   p = polyfit(x,angleDeltaRad,3);
   y = polyval(p,x);
 

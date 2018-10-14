@@ -1,4 +1,4 @@
-function [a,w,t,pos,pos2] = dataSlicer(a,w,t,pos,extraPoints)
+function [a,w,t,pos] = dataSlicer(a,w,t,pos,extraPoints)
 
   % Calculate magnitudes and find slice locations
   magW = sqrt(w.x.^2 + w.y.^2 + w.z.^2);
@@ -22,9 +22,6 @@ function [a,w,t,pos,pos2] = dataSlicer(a,w,t,pos,extraPoints)
   pos.x(1:sliceLocation(2)) = [];
   pos.y(1:sliceLocation(2)) = [];
 
-  % Resample to pair video and sensor
-  pos2.x = resample(pos.x,length(a.x),length(pos.x));
-  pos2.y = resample(pos.y,length(a.x),length(pos.y));
 end
 
 

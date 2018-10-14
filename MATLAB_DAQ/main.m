@@ -5,7 +5,8 @@ clc
 % Constant values / variables
 videoFileName = 'VID00-converted.mp4';
 dataFileName = 'DATA00.csv';
-extraPoints = 50;
+extraPoints = 0;
+initialCaptureRate = 240;
 
 % Get scale
 % [scale, red, blue, green] = scale(filename,false);
@@ -21,14 +22,14 @@ pos = positionLogger(videoFileName);
 a.y = cleanUpFreq(a.y,mean(t.frequency),4);
 
 % Match up data
-[a,w,t,pos,pos2] = dataSlicer(a,w,t,pos,extraPoints);
+[a,w,t,pos] = dataSlicer(a,w,t,pos,extraPoints);
 
 % Calculate angles and velocitys
-[angleDeltaRad, angleRad, p] = angleVelCalc(pos, 1, 1450, 10);
+[angleDeltaRad, angleRad, p] = angleVelCalc(pos, 1, 1400, 10, initialCaptureRate);
 close all
 
 % Cut off ends of data? --> Find where the car slipped
 
 
-% Plot the results --> Add a resample
-plotter(angleDeltaRad, angleRad, pos, a, w, t, p)
+% Plot the results
+plotter(angleDeltaRad, angleRad, pos, a, w, t, p, initialCaptureRate)
