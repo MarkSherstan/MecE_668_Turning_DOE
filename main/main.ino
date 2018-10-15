@@ -106,7 +106,8 @@ void loop(){
     myFile.print(accel_z, 7); myFile.print(",");
     myFile.print(rotation_x, 7); myFile.print(",");
     myFile.print(rotation_y, 7); myFile.print(",");
-    myFile.println(rotation_z, 7);
+    myFile.print(rotation_z, 7); myFile.print(",");
+    myFile.println(PWM);
 
     myFile.close();
 
