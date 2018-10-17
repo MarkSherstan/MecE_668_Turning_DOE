@@ -41,18 +41,18 @@ void setup(){
   //Serial.begin(57600); // Only use for debugging.
 
   // Attach ESC and turn off
-  esc.attach(9);
+  esc.attach(7);
   esc.writeMicroseconds(1000);
 
   // Indicator LED. Displays on if error occurs
-  pinMode(2, OUTPUT);
+  pinMode(5, OUTPUT);
 
   // Setup the registers of the MPU-6050 and start up
   setup_mpu_6050_registers();
 
   // See if the card is present and can be initialized, then set up name
   if (!SD.begin(chipSelect)) {
-    digitalWrite(2, HIGH);
+    digitalWrite(5, HIGH);
     while (1);
   }
 
@@ -63,14 +63,14 @@ void setup(){
         fileName[BASE_NAME_SIZE + 1] = '0';
         fileName[BASE_NAME_SIZE]++;
     } else {
-        digitalWrite(2, HIGH);
+        digitalWrite(5, HIGH);
         while (1);
       return;
     }
   }
 
   // Verify LED is off if all checks pass
-  digitalWrite(2, LOW);
+  digitalWrite(5, LOW);
 
   // Reset the loop timer
   loop_timer = micros();
@@ -111,9 +111,9 @@ void loop(){
 
     myFile.close();
 
-    digitalWrite(2, LOW);
+    digitalWrite(5, LOW);
   } else {
-    digitalWrite(2, HIGH);
+    digitalWrite(5, HIGH);
   }
 
   // Increase PWM signal every second and write to ESC
