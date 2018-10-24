@@ -18,7 +18,7 @@ scale = 0.048056789348528;
 pos = positionLogger(videoFileName);
 
 % Read in sensor data and clean where required
-[a,w,t] = fileReader(dataFileName);
+[a,w,t,PWM] = fileReader(dataFileName);
 a.y = cleanUpFreq(a.y,mean(t.frequency),4);
 
 % Match up data

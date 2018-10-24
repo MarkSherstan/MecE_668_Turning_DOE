@@ -1,4 +1,4 @@
-function [a,w,t] = fileReader(filename)
+function [a,w,t,PWM] = fileReader(filename)
   M = csvread(filename);
 
   t.microSeconds = M(:,1);
@@ -9,6 +9,7 @@ function [a,w,t] = fileReader(filename)
   w.x = M(:,5);
   w.y = M(:,6);
   w.z = M(:,7);
+  PWM = M(:,8);
 
   for i = 1:length(t.microSeconds)-1
     t.frequency(i,1) = 1e6 / (t.microSeconds(i+1) - t.microSeconds(i));
