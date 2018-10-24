@@ -117,10 +117,10 @@ void loop(){
   }
 
   // Increase PWM signal every second and write to ESC
-  if (micros() - loop_timer2) > 1000
+  if ((micros() - loop_timer2) > 1000) {
     loop_timer2 = micros();
     PWM = PWM + 20;
-  end
+  }
 
   esc.writeMicroseconds(PWM);
 
@@ -128,7 +128,6 @@ void loop(){
   while (micros() - loop_timer < 4000);
   loop_timer = micros();
 }
-
 
 void read_mpu_6050_data() {
   // Subroutine for reading the raw data
