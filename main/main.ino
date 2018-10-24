@@ -117,9 +117,9 @@ void loop(){
   }
 
   // Increase PWM signal every second and write to ESC
-  if ((micros() - loop_timer2) > 1000) {
+  if ((micros() - loop_timer2) > 1000000) {
     loop_timer2 = micros();
-    PWM = PWM + 20;
+    PWM = PWM + 5;
   }
 
   esc.writeMicroseconds(PWM);
