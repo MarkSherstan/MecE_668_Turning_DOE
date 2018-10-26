@@ -75,6 +75,23 @@ void setup(){
   // Reset the loop timer
   loop_timer = micros();
   loop_timer2 = micros();
+
+//  delay(5000);
+//
+//  digitalWrite(5, HIGH);
+//
+//  delay(1000);
+//
+//  digitalWrite(5, LOW);
+//
+//  delay(1000);
+//
+//  digitalWrite(5, HIGH);
+//
+//  delay(1000);
+//
+//  digitalWrite(5, LOW);
+
 }
 
 void loop(){
@@ -117,7 +134,7 @@ void loop(){
   }
 
   // Increase PWM signal every second and write to ESC
-  if ((micros() - loop_timer2) > 1000000) {
+  if ((micros() - loop_timer2) > 1000000/2) {
     loop_timer2 = micros();
     PWM = PWM + 1;
   }
