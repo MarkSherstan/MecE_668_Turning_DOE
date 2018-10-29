@@ -2,7 +2,6 @@ function [pos] = positionLogger(filename)
   tic
   % Read in video and process and initialize counter
   v = VideoReader(filename);
-  frameRate = v.FrameRate;
   i = 1;
 
   % Loop through video frame by frame
