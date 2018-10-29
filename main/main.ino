@@ -52,7 +52,7 @@ void setup(){
 
   // See if the card is present and can be initialized, then set up name
   if (!SD.begin(chipSelect)) {
-    digitalWrite(5, HIGH);
+    digitalWrite(A0, HIGH);
     while (1);
   }
 
@@ -63,34 +63,24 @@ void setup(){
         fileName[BASE_NAME_SIZE + 1] = '0';
         fileName[BASE_NAME_SIZE]++;
     } else {
-        digitalWrite(5, HIGH);
+        digitalWrite(A0, HIGH);
         while (1);
       return;
     }
   }
 
+  // Display some start up blinks for the user
+  digitalWrite(A0, LOW);  delay(1000);
+  digitalWrite(A0, HIGH); delay(5000);
+  digitalWrite(A0, LOW);  delay(1000);
+  digitalWrite(A0, HIGH); delay(1000);
+
   // Verify LED is off if all checks pass
-  digitalWrite(5, LOW);
+  digitalWrite(A0, LOW);
 
   // Reset the loop timer
   loop_timer = micros();
   loop_timer2 = micros();
-
-//  delay(5000);
-//
-//  digitalWrite(5, HIGH);
-//
-//  delay(1000);
-//
-//  digitalWrite(5, LOW);
-//
-//  delay(1000);
-//
-//  digitalWrite(5, HIGH);
-//
-//  delay(1000);
-//
-//  digitalWrite(5, LOW);
 
 }
 
@@ -128,9 +118,9 @@ void loop(){
 
     myFile.close();
 
-    digitalWrite(5, LOW);
+    digitalWrite(A0, LOW);
   } else {
-    digitalWrite(5, HIGH);
+    digitalWrite(A0, HIGH);
   }
 
   // Increase PWM signal every second and write to ESC
