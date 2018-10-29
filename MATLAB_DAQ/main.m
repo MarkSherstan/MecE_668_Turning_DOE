@@ -3,16 +3,13 @@ close all
 clc
 
 % Constant values / variables
-videoFileName = 'VID00-converted.mp4';
-dataFileName = 'DATA00.csv';
+videoFileName = 'Vehicle_Test_1.mp4';
+dataFileName = 'Vehicle_Test_1.csv';
 extraPoints = 0;
 initialCaptureRate = 240;
 
 % Get scale
-% [scale, red, blue, green] = scale(filename,false);
-% 30 fps --> 0.029464206496742
-% 240 fps --> 0.048056789348528
-scale = 0.048056789348528;
+[scale, red, blue, green] = scale(videoFileName,false);
 
 % Calculate positions
 pos = positionLogger(videoFileName);
