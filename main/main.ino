@@ -23,8 +23,8 @@ long scaleFactorAccel = 8192; // 2g --> 16384 , 4g --> 8192 , 8g --> 4096, 16g -
 int gyro_x, gyro_y, gyro_z;
 double rotation_x, rotation_y, rotation_z;
 long scaleFactorGyro = 65.5; // 250 deg/s --> 131, 500 deg/s --> 65.5, 1000 deg/s --> 32.8, 2000 deg/s --> 16.4
-long gyro_x_cal = -106;
-long gyro_y_cal = 123;
+long gyro_x_cal = -97;
+long gyro_y_cal = 119;
 long gyro_z_cal = -142;
 
 // Other important variables
