@@ -41,11 +41,11 @@ void setup(){
   //Serial.begin(57600); // Only use for debugging.
 
   // Attach ESC and turn off
-  esc.attach(7);
+  esc.attach(6);
   esc.writeMicroseconds(1000);
 
   // Indicator LED. Displays on if error occurs
-  pinMode(5, OUTPUT);
+  pinMode(A0, OUTPUT);
 
   // Setup the registers of the MPU-6050 and start up
   setup_mpu_6050_registers();
