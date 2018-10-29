@@ -32,7 +32,7 @@ long loop_timer;
 long loop_timer2;
 int temperature;
 int counter;
-int PWM = 1000;
+int PWM = 1100;
 
 
 void setup(){
@@ -127,9 +127,9 @@ void loop(){
   if ((micros() - loop_timer2) > 1000000/2) {
     loop_timer2 = micros();
     PWM = PWM + 1;
+    esc.writeMicroseconds(PWM);
   }
 
-  esc.writeMicroseconds(PWM);
 
   // Wait until the loop_timer reaches 4000us (250Hz) before starting the next loop
   while (micros() - loop_timer < 4000);
