@@ -20,7 +20,7 @@ pos = positionLogger(videoFileName);
 [aa,ww] = cleanData(a,w,t)
 
 % Match up data
-[a,w,t,pos] = dataSlicer(aa,ww,t,pos);
+[aa,ww,t,pos] = dataSlicer(aa,ww,t,pos);
 
 % Calculate angles and velocitys
 [angleDeltaRad, angleRad, y] = angleVelCalc(pos, 20, initialCaptureRate);
