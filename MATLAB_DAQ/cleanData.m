@@ -13,26 +13,24 @@ function [dataOut] = cleanA(a,t)
   Fs = mean(t.frequency);
   T = 1/Fs;
   L = length(t.seconds);
-  t = (0:L-1)*T;
 
   % Plot original data in time domain
   figure(1)
-  tt = 1:L;
 
   subplot(3,1,1)
-  plot(tt,a.x)
+  plot(t.seconds,a.x)
   title('Time Domain Plot X')
   xlabel('time (s)')
   ylabel('magnitude')
 
   subplot(3,1,2)
-  plot(tt,a.y)
+  plot(t.seconds,a.y)
   title('Time Domain Plot Y')
   xlabel('time (s)')
   ylabel('magnitude')
 
   subplot(3,1,3)
-  plot(tt,a.z)
+  plot(t.seconds,a.z)
   title('Time Domain Plot Z')
   xlabel('time (s)')
   ylabel('magnitude')
@@ -108,19 +106,19 @@ function [dataOut] = cleanA(a,t)
     figure(3)
 
     subplot(3,1,1)
-    plot(tt,dataOut.x)
+    plot(t.seconds,dataOut.x)
     title('Time Domain Plot - Filtered - X')
     xlabel('time (s)')
     ylabel('magnitude')
 
     subplot(3,1,2)
-    plot(tt,dataOut.y)
+    plot(t.seconds,dataOut.y)
     title('Time Domain Plot - Filtered - Y')
     xlabel('time (s)')
     ylabel('magnitude')
 
     subplot(3,1,3)
-    plot(tt,dataOut.z)
+    plot(t.seconds,dataOut.z)
     title('Time Domain Plot - Filtered - Z')
     xlabel('time (s)')
     ylabel('magnitude')
@@ -151,15 +149,14 @@ function [dataOut] = cleanW(w,t)
     % Display results
     close all
     figure(1)
-    tt = 1:length(t.seconds);
 
     subplot(2,1,1)
-    plot(tt,w.x,tt,w.y,tt,w.z)
+    plot(t.seconds,w.x,t.seconds,w.y,t.seconds,w.z)
     title('Original Data')
     legend('w_x','w_y','w_z')
 
     subplot(2,1,2)
-    plot(tt,dataOut.x,tt,dataOut.y,tt,dataOut.z)
+    plot(t.seconds,dataOut.x,t.seconds,dataOut.y,t.seconds,dataOut.z)
     title('Cleaned Data')
     legend('w_x','w_y','w_z')
 
