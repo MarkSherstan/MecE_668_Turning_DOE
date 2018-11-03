@@ -20,15 +20,16 @@ function [dataOut] = cleanA(a,t)
   title('Time Domain Plot')
   xlabel('time (s)')
   ylabel('magnitude')
+  tt = 1:L;
 
   subplot(3,1,1)
-  plot(t.seconds,a.x)
+  plot(tt,a.x)
 
   subplot(3,1,2)
-  plot(t.seconds,a.y)
+  plot(tt,a.y)
 
   subplot(3,1,3)
-  plot(t.seconds,a.z)
+  plot(tt,a.z)
 
   % Perfom FFT
   Y.x = fft(a.x);
@@ -82,7 +83,7 @@ function [dataOut] = cleanA(a,t)
     fc.y = cutOffFreq.y;
     fc.z = cutOffFreq.z;
 
-    fs = freq;
+    fs = Fs;
 
     [B,A] = butter(6,fc.x/(fs/2));
     dataOut.x = filter(B,A,a.x);
@@ -100,13 +101,13 @@ function [dataOut] = cleanA(a,t)
     ylabel('magnitude')
 
     subplot(3,1,1)
-    plot(t.seconds,dataOut.x)
+    plot(tt,dataOut.x)
 
     subplot(3,1,2)
-    plot(t.seconds,dataOut.y)
+    plot(tt,dataOut.y)
 
     subplot(3,1,3)
-    plot(t.seconds,dataOut.z)
+    plot(tt,dataOut.z)
   end
 
 end
@@ -147,5 +148,5 @@ function [dataOut] = cleanW(w,t)
     w.xx = movmean(w.x,smoothCoef);
     w.yy = movmean(w.y,smoothCoef);
     w.zz = movmean(w.z,smoothCoef);
-
+  end
 end
