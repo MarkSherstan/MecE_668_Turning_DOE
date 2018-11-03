@@ -67,8 +67,6 @@ function [dataOut] = cleanA(a,t)
 
   x = 0;
   while (x ~= 1)
-    % Get information from the user
-    x = input('Happy with the data? (1 0)? ');
 
     if x == 1
       break
@@ -108,6 +106,9 @@ function [dataOut] = cleanA(a,t)
 
     subplot(3,1,3)
     plot(tt,dataOut.z)
+
+    % Get information from the user
+    x = input('Happy with the accelerometer data? (1 0)? ');
   end
 
 end
@@ -116,11 +117,20 @@ end
 
 function [dataOut] = cleanW(w,t)
   x = 0;
-  w.xx = w.x;
-  w.yy = w.y;
-  w.zz = w.z;
-
   while (x ~= 1)
+
+    if x == 1
+      break
+    else
+      smoothCoef = input('How many points to smooth data [25 normal]? ');
+    end
+
+    % Adjust the data as required
+    dataOut.x = movmean(w.x,smoothCoef);
+    dataOut.y = movmean(w.y,smoothCoef);
+    dataOut.z = movmean(w.z,smoothCoef);
+
+    % Display results
     close all
     figure(1)
     tt = 1:length(t.seconds);
@@ -131,22 +141,11 @@ function [dataOut] = cleanW(w,t)
     legend('w_x','w_y','w_z')
 
     subplot(2,1,2)
-    plot(tt,w.xx,tt,w.yy,tt,w.zz)
+    plot(tt,dataOut.x,tt,dataOut.y,tt,dataOut.z)
     title('Cleaned Data')
     legend('w_x','w_y','w_z')
 
     % Get information from the user
-    x = input('Is data smoothed (1 0)? ');
-
-    if x == 1
-      break
-    else
-      smoothCoef = input('How many points to smooth data [25 normal]? ');
-    end
-
-    % Adjust the data as required
-    w.xx = movmean(w.x,smoothCoef);
-    w.yy = movmean(w.y,smoothCoef);
-    w.zz = movmean(w.z,smoothCoef);
+    x = input('Happy with gyro data (1 0)? ');
   end
 end
