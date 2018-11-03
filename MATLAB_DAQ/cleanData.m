@@ -17,19 +17,25 @@ function [dataOut] = cleanA(a,t)
 
   % Plot original data in time domain
   figure(1)
-  title('Time Domain Plot')
-  xlabel('time (s)')
-  ylabel('magnitude')
   tt = 1:L;
 
   subplot(3,1,1)
   plot(tt,a.x)
+  title('Time Domain Plot X')
+  xlabel('time (s)')
+  ylabel('magnitude')
 
   subplot(3,1,2)
   plot(tt,a.y)
+  title('Time Domain Plot Y')
+  xlabel('time (s)')
+  ylabel('magnitude')
 
   subplot(3,1,3)
   plot(tt,a.z)
+  title('Time Domain Plot Z')
+  xlabel('time (s)')
+  ylabel('magnitude')
 
   % Perfom FFT
   Y.x = fft(a.x);
@@ -52,18 +58,24 @@ function [dataOut] = cleanA(a,t)
 
   % Plot frequency domain
   figure(2)
-  title('Frequency Domain Plot')
-  xlabel('f (Hz)')
-  ylabel('|P1(f)|')
 
   subplot(3,1,1)
   plot(f.x,P1.x)
+  title('Frequency Domain Plot X')
+  xlabel('f (Hz)')
+  ylabel('|P1(f)|')
 
   subplot(3,1,2)
   plot(f.y,P1.y)
+  title('Frequency Domain Plot Y')
+  xlabel('f (Hz)')
+  ylabel('|P1(f)|')
 
   subplot(3,1,3)
   plot(f.z,P1.z)
+  title('Frequency Domain Plot Z')
+  xlabel('f (Hz)')
+  ylabel('|P1(f)|')
 
   x = 0;
   while (x ~= 1)
@@ -94,21 +106,27 @@ function [dataOut] = cleanA(a,t)
 
     % Plot the filtered data back in the time domain
     figure(3)
-    title('Time Domain Plot - Filtered')
-    xlabel('time (s)')
-    ylabel('magnitude')
 
     subplot(3,1,1)
     plot(tt,dataOut.x)
+    title('Time Domain Plot - Filtered - X')
+    xlabel('time (s)')
+    ylabel('magnitude')
 
     subplot(3,1,2)
     plot(tt,dataOut.y)
+    title('Time Domain Plot - Filtered - Y')
+    xlabel('time (s)')
+    ylabel('magnitude')
 
     subplot(3,1,3)
     plot(tt,dataOut.z)
+    title('Time Domain Plot - Filtered - Z')
+    xlabel('time (s)')
+    ylabel('magnitude')
 
     % Get information from the user
-    x = input('Happy with the accelerometer data? (1 0)? ');
+    x = input('Happy with the accelerometer data (1 0)? ');
   end
 
 end
