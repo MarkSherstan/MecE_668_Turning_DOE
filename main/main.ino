@@ -17,22 +17,22 @@ char fileName[] = FILE_BASE_NAME "00.csv";
 // Accelerometer
 long acc_x, acc_y, acc_z;
 double accel_x, accel_y, accel_z;
-long scaleFactorAccel = 8192; // 2g --> 16384 , 4g --> 8192 , 8g --> 4096, 16g --> 2048
+long scaleFactorAccel = 16384; // 2g --> 16384 , 4g --> 8192 , 8g --> 4096, 16g --> 2048
 
 // Gyroscope --> Get offsets from calibrateGyro.ino
 int gyro_x, gyro_y, gyro_z;
 double rotation_x, rotation_y, rotation_z;
-long scaleFactorGyro = 65.5; // 250 deg/s --> 131, 500 deg/s --> 65.5, 1000 deg/s --> 32.8, 2000 deg/s --> 16.4
-long gyro_x_cal = -97;
-long gyro_y_cal = 119;
-long gyro_z_cal = -142;
+long scaleFactorGyro = 131; // 250 deg/s --> 131, 500 deg/s --> 65.5, 1000 deg/s --> 32.8, 2000 deg/s --> 16.4
+long gyro_x_cal = -106;
+long gyro_y_cal = 124;
+long gyro_z_cal = -156;
 
 // Other important variables
 long loop_timer;
 long loop_timer2;
 int temperature;
 int counter;
-int PWM = 1100;
+int PWM = 1050;
 
 
 void setup(){
@@ -126,7 +126,7 @@ void loop(){
   // Increase PWM signal every second and write to ESC
   if ((micros() - loop_timer2) > 1000000/2) {
     loop_timer2 = micros();
-    PWM = PWM + 1;
+    PWM = PWM + 3;
     esc.writeMicroseconds(PWM);
   }
 
@@ -165,12 +165,12 @@ void setup_mpu_6050_registers() {
   // Configure the accelerometer
   Wire.beginTransmission(0x68);
   Wire.write(0x1C);
-  Wire.write(0x08); // 2g --> 0x00, 4g --> 0x08, 8g --> 0x10, 16g --> 0x18
+  Wire.write(0x00); // 2g --> 0x00, 4g --> 0x08, 8g --> 0x10, 16g --> 0x18
   Wire.endTransmission();
 
   // Configure the gyro
   Wire.beginTransmission(0x68);
   Wire.write(0x1B);
-  Wire.write(0x08); // 250 deg/s --> 0x00, 500 deg/s --> 0x08, 1000 deg/s --> 0x10, 2000 deg/s --> 0x18
+  Wire.write(0x00); // 250 deg/s --> 0x00, 500 deg/s --> 0x08, 1000 deg/s --> 0x10, 2000 deg/s --> 0x18
   Wire.endTransmission();
 }
