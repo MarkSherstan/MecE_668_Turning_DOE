@@ -54,7 +54,7 @@ function [] = circleFilter(pos,scale)
   axis square
 
   % Convert to [0 2*pi]
-  for i = idx:length(posx)-1
+  for i = 1:length(posx)-1
     angleRad(i) = atan2(posy(i+1)-posy(i),posx(i+1)-posx(i));
 
     % Fix the data based off the atan2 conditions of being bounded between pi's
@@ -66,9 +66,40 @@ function [] = circleFilter(pos,scale)
   end
 
   figure(4)
-  plot(radius)
+  plot(angleRad)
   title('Radius vs iteration number')
-  xlim([idx length(radius)])
 
+  localMin = islocalmin(angleRad,'MinProminence',pi/4);
+
+  x = 1:length(angleRad);
+
+  figure(5)
+  plot(x,angleRad,'-k',x(localMin),angleRad(localMin),'r*')
+  title('Local Max and Min of Magnitude Data')
+
+  idx = find(localMin);
+
+  for i = 1:length(idx)-1;
+    posxRange = posx(idx(i):idx(i+1));
+    posyRange = posy(idx(i):idx(i+1));
+
+    centerX(i) = mean(posxRange);
+    centerY(i) = mean(posyRange);
+
+    largeX = mean(maxk(posxRange,5));
+    smallX = mean(mink(posxRange,5));
+
+    largeY = mean(maxk(posyRange,5));
+    smallY = mean(mink(posyRange,5));
+
+    radius2(i) = ((largeX - smallX) + (largeY - smallY)) / 4;
+  end
+
+  figure(6)
+  plot(centerX,centerY,'k*')
+
+
+  figure(7)
+  plot(radius2)
 % Convert to actual radius here using scale
 end
