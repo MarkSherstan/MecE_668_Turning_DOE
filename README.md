@@ -38,7 +38,9 @@ Values retrieved from the MPU-6050 Register Map and Descriptions Revision 4.2 lo
 * Calibration_Blobs --> Print at "actual size". Do not scale! Used for scale.m. Ensure that calibration blobs are located at same height as tracking circle.
 
 ## To be Completed
-* Hold the car stationary (and wheels) stationary 
+* Hold the car stationary (and wheels) stationary
 * Add parallel computing toolbox to decrease computation time
 * Get instantaneous velocity from w
 * Update the README with new functions
+* Use a different curve fit?
+* Do I need to resample the data anywhere?
