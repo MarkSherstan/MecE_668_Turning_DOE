@@ -5,7 +5,6 @@ clc
 % Constant values / variables
 videoFileName = 'DATA00.mp4';
 dataFileName = 'DATA00.csv';
-initialCaptureRate = 240;
 
 % Get scale
 [scale, red, blue, green] = scale(videoFileName,false);
@@ -24,6 +23,9 @@ pos = positionLogger(videoFileName);
 
 % Find the function for vehicles angular velocity
 y = createFit(t.seconds, ww.z);
+
+% Track the change in circles for slip detection
+[ ] = circleFilter(pos,scale)
 
 % Plot the results
 close all
