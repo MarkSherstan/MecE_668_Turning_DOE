@@ -22,9 +22,9 @@ pos = positionLogger(videoFileName);
 % Match up data
 [aa,ww,t,pos] = dataSlicer(aa,ww,t,pos);
 
-% Calculate angles and velocitys
-[angleDeltaRad, angleRad, y] = angleVelCalc(pos, 20, initialCaptureRate);
+% Find the function for vehicles angular velocity
+y = createFit(t.seconds, ww.z);
 
 % Plot the results
 close all
-plotter(angleDeltaRad, angleRad, pos, aa, ww, t, y, initialCaptureRate)
+plotter(pos, aa, ww, t, y)
