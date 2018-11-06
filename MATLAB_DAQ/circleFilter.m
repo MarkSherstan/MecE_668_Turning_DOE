@@ -49,10 +49,26 @@ function [] = circleFilter(pos,scale)
   idx = min([find(mag == minValues(changePointMinMax)) find(mag == maxValues(changePointMinMax))]);
 
   figure(3)
-  plot(posx(idx:end),posy(idx:end))
+  plot(posx(idx:end),posy(idx:end),'k*')
   axis equal
   axis square
 
+  % Convert to [0 2*pi]
+  for i = idx:length(posx)-1
+    angleRad(i) = atan2(posy(i+1)-posy(i),posx(i+1)-posx(i));
+
+    % Fix the data based off the atan2 conditions of being bounded between pi's
+    if (angleRad(i) <= 0) && (angleRad(i) >= -pi)
+      angleRad(i) = angleRad(i) + 2*pi;
+    end
+
+    radius(i) = abs((posy(i+1) - posy(i)) / sin(angleRad(i)));
+  end
+
+  figure(4)
+  plot(radius)
+  title('Radius vs iteration number')
+  xlim([idx length(radius)])
 
 % Convert to actual radius here using scale
 end
