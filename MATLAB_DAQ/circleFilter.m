@@ -1,10 +1,11 @@
-function [test] = circleFilter(pos,scale)
+function [] = circleFilter(pos,scale)
   close all
 
   % Average 10 points forward and backward
   posx = movmean(pos.x,20);
   posy = movmean(pos.y,20);
 
+  % Plot the original and filtered data
   figure(1)
   subplot(1,2,1)
   plot(pos.x,pos.y)
@@ -18,42 +19,7 @@ function [test] = circleFilter(pos,scale)
   axis equal
   axis square
 
-  for i = 1:length(posx)
-    mag(i) = sqrt(posx(i)^2 + posy(i)^2);
-  end
-
-  localMin = islocalmin(mag,'MinProminence',100);
-  localMax = islocalmax(mag,'MinProminence',100);
-
-  minValues = mag(localMin);
-  maxValues = mag(localMax);
-  x = 1:length(posx);
-
-  figure(2)
-  subplot(3,1,1)
-  plot(x,mag,'-k',x(localMin),mag(localMin),'r*',x(localMax),mag(localMax),'b*')
-  title('Local Max and Min of Magnitude Data')
-
-  subplot(3,1,2)
-  plot(minValues,'r*')
-  title('Local Min')
-
-  subplot(3,1,3)
-  plot(maxValues,'b*')
-  title('Local Max')
-
-  percentChangeMin = abs((diff(minValues) ./ minValues(1:end-1)) * 100);
-  percentChangeMax = abs((diff(maxValues) ./ maxValues(1:end-1)) * 100);
-  changePointMinMax = min([find(percentChangeMin > 2) find(percentChangeMax > 2)]);
-
-  idx = min([find(mag == minValues(changePointMinMax)) find(mag == maxValues(changePointMinMax))]);
-
-  figure(3)
-  plot(posx(idx:end),posy(idx:end),'k*')
-  axis equal
-  axis square
-
-  % Convert to [0 2*pi]
+  % Find the angle between two subsequent points and convert to range [0 2*pi]
   for i = 1:length(posx)-1
     angleRad(i) = atan2(posy(i+1)-posy(i),posx(i+1)-posx(i));
 
@@ -62,43 +28,34 @@ function [test] = circleFilter(pos,scale)
       angleRad(i) = angleRad(i) + 2*pi;
     end
 
-    radius(i) = abs((posy(i+1) - posy(i)) / sin(angleRad(i)));
   end
 
+  % Find the min angle values and use them as a reference starting point
   localMin = islocalmin(angleRad,'MinProminence',pi/4);
-
   x = 1:length(angleRad);
+  idx = find(localMin);
 
-  figure(5)
+  % Plot the results
+  figure(2)
   plot(x,angleRad,'-k',x(localMin),angleRad(localMin),'r*')
   title('Local Min of Angle')
   xlabel('Iteration')
   ylabel('Angle [rads]')
 
-  idx = find(localMin);
-
+  % Find the center points for each circle
   for i = 1:length(idx)-1;
     posxRange = posx(idx(i):idx(i+1));
     posyRange = posy(idx(i):idx(i+1));
 
     centerX(i) = mean(posxRange);
     centerY(i) = mean(posyRange);
-
-    largeX = mean(maxk(posxRange,5));
-    smallX = mean(mink(posxRange,5));
-
-    largeY = mean(maxk(posyRange,5));
-    smallY = mean(mink(posyRange,5));
-
-    radius2(i) = ((largeX - smallX) + (largeY - smallY)) / 4;
   end
 
+  % Create matrix of each circle in a column centered about its zero point
+  k = 0;
   dataX = zeros(max(diff(idx)),length(idx));
   dataY = zeros(max(diff(idx)),length(idx));
 
-  k = 0;
-
-  % Create matrix of each circle in a column centered about its zero point
   for i = 1:length(idx)-1;
     startPoint = idx(i);
     for j = 1:length(posx(idx(i):idx(i+1)))-1
@@ -109,15 +66,19 @@ function [test] = circleFilter(pos,scale)
     k = 0;
   end
 
-figure(7)
-plot(dataX,dataY)
-axis equal
-axis square
+  % Plot circles with center points at zero and zero
+  figure(3)
+  plot(dataX,dataY)
+  title('Circles centered at Zero')
+  axis equal
+  axis square
 
-radius3 = zeros(length(posx),1);
+  % Find the radius for each point based on the center and plot
+  test = dataX.^2 + dataY.^2;
+  test = reshape(test,[],1);
+  test(test==0) = [];
 
-test = dataX.^2 + dataY.^2;
-test = reshape(test,[],1);
-%test(test==0) = [];
-figure(8)
-plot(test)
+  figure(4)
+  plot(test)
+
+end
