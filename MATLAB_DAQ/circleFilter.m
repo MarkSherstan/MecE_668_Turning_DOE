@@ -1,4 +1,4 @@
-function [] = circleFilter(pos,scale)
+function [test] = circleFilter(pos,scale)
   close all
 
   % Average 10 points forward and backward
@@ -65,17 +65,15 @@ function [] = circleFilter(pos,scale)
     radius(i) = abs((posy(i+1) - posy(i)) / sin(angleRad(i)));
   end
 
-  figure(4)
-  plot(angleRad)
-  title('Radius vs iteration number')
-
   localMin = islocalmin(angleRad,'MinProminence',pi/4);
 
   x = 1:length(angleRad);
 
   figure(5)
   plot(x,angleRad,'-k',x(localMin),angleRad(localMin),'r*')
-  title('Local Max and Min of Magnitude Data')
+  title('Local Min of Angle')
+  xlabel('Iteration')
+  ylabel('Angle [rads]')
 
   idx = find(localMin);
 
@@ -95,11 +93,31 @@ function [] = circleFilter(pos,scale)
     radius2(i) = ((largeX - smallX) + (largeY - smallY)) / 4;
   end
 
-  figure(6)
-  plot(centerX,centerY,'k*')
+  dataX = zeros(max(diff(idx)),length(idx));
+  dataY = zeros(max(diff(idx)),length(idx));
 
+  k = 0;
 
-  figure(7)
-  plot(radius2)
-% Convert to actual radius here using scale
-end
+  % Create matrix of each circle in a column centered about its zero point
+  for i = 1:length(idx)-1;
+    startPoint = idx(i);
+    for j = 1:length(posx(idx(i):idx(i+1)))-1
+      dataX(j,i) = posx(startPoint+k) - centerX(i);
+      dataY(j,i) = posy(startPoint+k) - centerY(i);
+      k = k+1;
+    end
+    k = 0;
+  end
+
+figure(7)
+plot(dataX,dataY)
+axis equal
+axis square
+
+radius3 = zeros(length(posx),1);
+
+test = dataX.^2 + dataY.^2;
+test = reshape(test,[],1);
+%test(test==0) = [];
+figure(8)
+plot(test)
