@@ -1,4 +1,4 @@
-function [] = circleFilter(pos,scale)
+function [dataX dataY] = circleFilter(pos,scale)
   close all
 
   % Average 10 points forward and backward
@@ -51,19 +51,19 @@ function [] = circleFilter(pos,scale)
     centerY(i) = mean(posyRange);
   end
 
-  % Create matrix of each circle in a column centered about its zero point
-  k = 0;
-  dataX = zeros(max(diff(idx)),length(idx));
-  dataY = zeros(max(diff(idx)),length(idx));
+  % Create two column vectors for each circle centered about its zero point
+  k = 1;
+  dataX = zeros(length(posx),1);
+  dataY = zeros(length(posy),1);
 
   for i = 1:length(idx)-1;
     startPoint = idx(i);
-    for j = 1:length(posx(idx(i):idx(i+1)))-1
-      dataX(j,i) = posx(startPoint+k) - centerX(i);
-      dataY(j,i) = posy(startPoint+k) - centerY(i);
-      k = k+1;
+    for j = 0:length(posx(idx(i):idx(i+1)))
+      dataX(k,1) = posx(startPoint+j) - centerX(i);
+      dataY(k,1) = posy(startPoint+j) - centerY(i);
+      k = k + 1;
     end
-    k = 0;
+
   end
 
   % Plot circles with center points at zero and zero
@@ -74,10 +74,7 @@ function [] = circleFilter(pos,scale)
   axis square
 
   % Find the radius for each point based on the center and plot
-  test = dataX.^2 + dataY.^2;
-  test = reshape(test,[],1);
-  test(test==0) = [];
-
+  test = sqrt(dataX.^2 + dataY.^2);
   figure(4)
   plot(test)
 
