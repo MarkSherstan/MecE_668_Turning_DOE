@@ -23,16 +23,16 @@ long scaleFactorAccel = 16384; // 2g --> 16384 , 4g --> 8192 , 8g --> 4096, 16g 
 int gyro_x, gyro_y, gyro_z;
 double rotation_x, rotation_y, rotation_z;
 long scaleFactorGyro = 131; // 250 deg/s --> 131, 500 deg/s --> 65.5, 1000 deg/s --> 32.8, 2000 deg/s --> 16.4
-long gyro_x_cal = -106;
-long gyro_y_cal = 124;
-long gyro_z_cal = -156;
+long gyro_x_cal = -251;
+long gyro_y_cal = 255;
+long gyro_z_cal = -284;
 
 // Other important variables
 long loop_timer;
 long loop_timer2;
 int temperature;
 int counter;
-int PWM = 1050;
+int PWM = 1075;
 
 
 void setup(){
