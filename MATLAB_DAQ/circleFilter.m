@@ -1,4 +1,4 @@
-function [posZeroX,posZeroY,radius] = circleFilter(pos,scale,flag)
+function [posZerod,radius] = circleFilter(pos,scale,flag)
 
   % Average 10 points forward and backward
   posx = movmean(pos.x,20);
@@ -47,6 +47,10 @@ function [posZeroX,posZeroY,radius] = circleFilter(pos,scale,flag)
   r = sqrt(posZeroX.^2 + posZeroY.^2);
   radius.pixel = r;
   radius.meters = r * scale;
+
+  % Output the circles when centered at zero zero
+  posZerod.x = posZeroX;
+  posZerod.y = posZeroY;
 
   % Display all figures based on flag input
   if flag == true
