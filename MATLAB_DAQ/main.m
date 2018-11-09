@@ -19,13 +19,13 @@ pos = positionLogger(videoFileName);
 [aa,ww] = cleanData(a,w,t)
 
 % Match up data
-[aa,ww,t,pos] = dataSlicer(aa,ww,t,pos);
+[aa,ww,tt,pospos] = dataSlicer(aa,ww,t,pos);
 
 % Find the function for vehicles angular velocity
-y = createFit(t.seconds, ww.z);
+y = createFit(tt.seconds, ww.z);
 
-% Track the change in circles for slip detection
-[ ] = circleFilter(pos,scale)
+% Find the circle radius for slip detection and instantaneous velocity
+[posZeroX, posZeroY, radius] = circleFilter(pos,scale,false);
 
 % Plot the results
 close all
