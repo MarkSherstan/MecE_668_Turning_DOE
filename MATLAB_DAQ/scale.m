@@ -1,6 +1,4 @@
 function [out, red, blue, green] = scale(filename,flag)
-%SCALE   Load in image "I" with red, green, and blue calibration blobs. Toggle
-% visuals with either true or false for flag. Units in [cm / pixel].
 
   % Filter out initial capture and get scale from advanced frame
   v = VideoReader(filename);
@@ -9,9 +7,9 @@ function [out, red, blue, green] = scale(filename,flag)
   end
 
   % Actual center to center distance of blobs
-  red.c2c = 10;       % cm
-  green.c2c = 20;     % cm
-  blue.c2c = 15;      % cm
+  red.c2c = 10/100;       % m
+  green.c2c = 20/100;     % m
+  blue.c2c = 15/100;      % m
 
   % Threshold images for blobs
   [red.BW, red.colorMask] = createRedMask(I);
