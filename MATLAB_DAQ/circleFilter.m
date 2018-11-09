@@ -4,20 +4,6 @@ function [posZeroX,posZeroY,radius] = circleFilter(pos,scale,flag)
   posx = movmean(pos.x,20);
   posy = movmean(pos.y,20);
 
-  % Plot the original and filtered data
-  figure(1)
-  subplot(1,2,1)
-  plot(pos.x,pos.y)
-  title('Original Data')
-  axis equal
-  axis square
-
-  subplot(1,2,2)
-  plot(posx,posy)
-  title('Smoothed Data')
-  axis equal
-  axis square
-
   % Find the angle between two subsequent points and convert to range [0 2*pi]
   for i = 1:length(posx)-1
     angleRad(i) = atan2(posy(i+1)-posy(i),posx(i+1)-posx(i));
@@ -33,13 +19,6 @@ function [posZeroX,posZeroY,radius] = circleFilter(pos,scale,flag)
   localMin = islocalmin(angleRad,'MinProminence',pi/4);
   x = 1:length(angleRad);
   idx = find(localMin);
-
-  % Plot the results
-  figure(2)
-  plot(x,angleRad,'-k',x(localMin),angleRad(localMin),'r*')
-  title('Local Min of Angle')
-  xlabel('Iteration')
-  ylabel('Angle [rads]')
 
   % Find the center points for each circle
   for i = 1:length(idx)-1;
@@ -64,22 +43,49 @@ function [posZeroX,posZeroY,radius] = circleFilter(pos,scale,flag)
     end
   end
 
-  % Find the radius in pixels and convert to actual measurment
-  radius = sqrt(posZeroX.^2 + posZeroY.^2);
-  radius.pixel = radius;
-  radius.cm = radius .* scale;
+  % Find the radius in pixels and convert to actual measurment, output of function
+  r = sqrt(posZeroX.^2 + posZeroY.^2);
+  radius.pixel = r;
+  radius.meters = r * scale;
 
-  % Plot circles with center points at zero and zero
-  figure(3)
-  plot(posZeroX,posZeroY)
-  title('Circles centered at Zero')
-  axis equal
-  axis square
+  % Display all figures based on flag input
+  if flag == true
 
-  % Plot the radius as a function of frame
-  figure(4)
-  plot(radius.cm)
-  xlabel('Frame number')
-  ylabel('Radius of Circle [cm]')
+    % Plot the original and averaged circles
+    figure(1)
+    subplot(1,2,1)
+    plot(pos.x,pos.y)
+    title('Original Data')
+    axis equal
+    axis square
 
-end % MOVE ALL PLOTS TO PLOTTER ONCE TESTED ONCE MORE!!!
+    subplot(1,2,2)
+    plot(posx,posy)
+    title('Smoothed Data')
+    axis equal
+    axis square
+
+    % Plot the local minimums (start of a circle)
+    figure(2)
+    plot(x,angleRad,'-k',x(localMin),angleRad(localMin),'r*')
+    title('Local Min of Angle')
+    xlabel('Iteration')
+    ylabel('Angle [rads]')
+
+    % Plot circles with center points at zero and zero
+    figure(3)
+    plot(posZeroX,posZeroY)
+    title('Circles centered at Zero')
+    axis equal
+    axis square
+
+    % Plot the radius as a function of frame
+    figure(4)
+    plot(radius.meters)
+    title('Circle Radius as a function of Frame Number')
+    xlabel('Frame number')
+    ylabel('Radius of Circle [cm]')
+
+  end
+
+end
