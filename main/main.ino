@@ -17,7 +17,7 @@ char fileName[] = FILE_BASE_NAME "00.csv";
 // Accelerometer
 long acc_x, acc_y, acc_z;
 double accel_x, accel_y, accel_z;
-long scaleFactorAccel = 16384; // 2g --> 16384 , 4g --> 8192 , 8g --> 4096, 16g --> 2048
+long scaleFactorAccel = 8192; // 2g --> 16384 , 4g --> 8192 , 8g --> 4096, 16g --> 2048
 
 // Gyroscope --> Get offsets from calibrateGyro.ino
 int gyro_x, gyro_y, gyro_z;
@@ -32,7 +32,7 @@ long loop_timer;
 long loop_timer2;
 int temperature;
 int counter;
-int PWM = 1075;
+int PWM = 1050;
 
 
 void setup(){
@@ -165,7 +165,7 @@ void setup_mpu_6050_registers() {
   // Configure the accelerometer
   Wire.beginTransmission(0x68);
   Wire.write(0x1C);
-  Wire.write(0x00); // 2g --> 0x00, 4g --> 0x08, 8g --> 0x10, 16g --> 0x18
+  Wire.write(0x08); // 2g --> 0x00, 4g --> 0x08, 8g --> 0x10, 16g --> 0x18
   Wire.endTransmission();
 
   // Configure the gyro
