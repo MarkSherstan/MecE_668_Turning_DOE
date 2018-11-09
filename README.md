@@ -36,9 +36,3 @@ Values retrieved from the MPU-6050 Register Map and Descriptions Revision 4.2 lo
 
 * Circuit_Layout --> Wiring layout using Fritzing
 * Calibration_Blobs --> Print at "actual size". Do not scale! Used for scale.m. Ensure that calibration blobs are located at same height as tracking circle.
-
-## To be Completed
-
-* Use a different curve fit? --> Even required?
-* Do I need to resample the data anywhere?
-* Plot instantaneous velocity (radius * wz)
