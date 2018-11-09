@@ -1,5 +1,4 @@
-function [dataX dataY] = circleFilter(pos,scale)
-  close all
+function [posZeroX,posZeroY,radius] = circleFilter(pos,scale,flag)
 
   % Average 10 points forward and backward
   posx = movmean(pos.x,20);
@@ -53,29 +52,34 @@ function [dataX dataY] = circleFilter(pos,scale)
 
   % Create two column vectors for each circle centered about its zero point
   k = 1;
-  dataX = zeros(length(posx),1);
-  dataY = zeros(length(posy),1);
+  posZeroX = zeros(length(posx),1);
+  posZeroY = zeros(length(posy),1);
 
   for i = 1:length(idx)-1;
     startPoint = idx(i);
     for j = 0:length(posx(idx(i):idx(i+1)))
-      dataX(k,1) = posx(startPoint+j) - centerX(i);
-      dataY(k,1) = posy(startPoint+j) - centerY(i);
+      posZeroX(k,1) = posx(startPoint+j) - centerX(i);
+      posZeroY(k,1) = posy(startPoint+j) - centerY(i);
       k = k + 1;
     end
-
   end
+
+  % Find the radius in pixels and convert to actual measurment
+  radius = sqrt(posZeroX.^2 + posZeroY.^2);
+  radius.pixel = radius;
+  radius.cm = radius .* scale;
 
   % Plot circles with center points at zero and zero
   figure(3)
-  plot(dataX,dataY)
+  plot(posZeroX,posZeroY)
   title('Circles centered at Zero')
   axis equal
   axis square
 
-  % Find the radius for each point based on the center and plot
-  test = sqrt(dataX.^2 + dataY.^2);
+  % Plot the radius as a function of frame
   figure(4)
-  plot(test)
+  plot(radius.cm)
+  xlabel('Frame number')
+  ylabel('Radius of Circle [cm]')
 
-end
+end % MOVE ALL PLOTS TO PLOTTER ONCE TESTED ONCE MORE!!!
