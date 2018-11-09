@@ -68,8 +68,8 @@ function [a,w,t,pos,posResample] = dataSlicer(a,w,t,pos)
   % Output sliced pos and resample to match the ???
   pos.x = pos.x(sliceLocationVideo(1):sliceLocationVideo(2));
   pos.y = pos.y(sliceLocationVideo(1):sliceLocationVideo(2));
-  posResample.x = resample(pos.x,length(t.seconds),length(pospos.x));
-  posResample.y = resample(pos.y,length(t.seconds),length(pospos.y));
+  posResample.x = resample(pos.x,length(t.seconds),length(pos.x));
+  posResample.y = resample(pos.y,length(t.seconds),length(pos.y));
 
 end
 
