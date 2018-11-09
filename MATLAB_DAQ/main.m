@@ -3,12 +3,11 @@ close all
 clc
 
 % Constant values / variables
-videoFileName = 'DATA00.mp4';
-dataFileName = 'DATA00.csv';
-initialCaptureRate = 240;
+videoFileName = 'Trial#.mp4';
+dataFileName = 'Trial#.csv';
 
 % Get scale
-[scale, red, blue, green] = scale(videoFileName,false);
+scale = scale(videoFileName,false);
 
 % Calculate positions
 pos = positionLogger(videoFileName);
@@ -17,14 +16,14 @@ pos = positionLogger(videoFileName);
 [a,w,t,PWM] = fileReader(dataFileName);
 
 % Clean up the data
-[aa,ww] = cleanData(a,w,t)
+[aa,ww] = cleanData(a,w,t);
 
-% Match up data
-[aa,ww,t,pos] = dataSlicer(aa,ww,t,pos);
+% Match up sensor data and video data
+[aa,ww,tt,pospos,posResample] = dataSlicer(aa,ww,t,pos);
 
-% Calculate angles and velocitys
-[angleDeltaRad, angleRad, y] = angleVelCalc(pos, 20, initialCaptureRate);
+% Find the circle radius for slip detection and instantaneous velocity
+[posZerod,radius] = circleFilter(pospos,scale,false);
 
 % Plot the results
 close all
-plotter(angleDeltaRad, angleRad, pos, aa, ww, t, y, initialCaptureRate)
+plotter(pos, posZerod, radius, aa, ww, tt)

@@ -1,16 +1,18 @@
-function [a,w,t,pos] = dataSlicer(a,w,t,pos)
+function [a,w,t,pos,posResample] = dataSlicer(a,w,t,pos)
 
-  % Calculate magnitudes and find slice locations
+  % Calculate magnitudes and estimate a start slice location (based on change
+  % of 5) from the average of the first and last 100 points
   magW = sqrt(w.x.^2 + w.y.^2 + w.z.^2);
   magPos = sqrt(pos.x.^2 + pos.y.^2);
 
   sliceLocationSensor = slicer(magW);
   sliceLocationVideo = slicer(magPos);
 
-  % Get input from user if values are good
   x = 0;
   while (x ~= 1)
     close all
+
+    % Plot a visual for the user with markers where the cut points are
     figure(1)
     x1 = 1:length(magPos);
     x2 = 1:length(magW);
@@ -42,14 +44,14 @@ function [a,w,t,pos] = dataSlicer(a,w,t,pos)
 
       fixVideoLow = input('Adjust video low by: ');
       fixVideoHigh = input('Adjust video high by: ');
+
+      % Adjust the data as required
+      sliceLocationSensor(1) = sliceLocationSensor(1) + fixSensorLow;
+      sliceLocationSensor(2) = sliceLocationSensor(2) + fixSensorHigh;
+
+      sliceLocationVideo(1) = sliceLocationVideo(1) + fixVideoLow;
+      sliceLocationVideo(2) = sliceLocationVideo(2) + fixVideoHigh;
     end
-
-    % Adjust the data as required
-    sliceLocationSensor(1) = sliceLocationSensor(1) + fixSensorLow;
-    sliceLocationSensor(2) = sliceLocationSensor(2) + fixSensorHigh;
-
-    sliceLocationVideo(1) = sliceLocationVideo(1) + fixVideoLow;
-    sliceLocationVideo(2) = sliceLocationVideo(2) + fixVideoHigh;
   end
 
   % Output sliced a w and t
@@ -63,15 +65,19 @@ function [a,w,t,pos] = dataSlicer(a,w,t,pos)
   t.seconds = t.seconds(sliceLocationSensor(1):sliceLocationSensor(2));
   t.frequency = t.frequency(sliceLocationSensor(1):sliceLocationSensor(2));
 
-  % Output sliced pos
+  % Output sliced pos and resample to match the ???
   pos.x = pos.x(sliceLocationVideo(1):sliceLocationVideo(2));
   pos.y = pos.y(sliceLocationVideo(1):sliceLocationVideo(2));
+  posResample.x = resample(pos.x,length(t.seconds),length(pos.x));
+  posResample.y = resample(pos.y,length(t.seconds),length(pos.y));
 
 end
 
 
+
 function [sliceLocation] = slicer(mag)
-  % Initialize variables
+
+  % Initialize variables and find the average of the first 100 points
   countForward = 0;
   countBackward = 0;
   flatForward = mean(mag(1:100));
