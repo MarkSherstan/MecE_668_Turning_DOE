@@ -16,7 +16,7 @@ Values retrieved from the MPU-6050 Register Map and Descriptions Revision 4.2 lo
 ## Arduino
 
 * Accelerometer --> Outputs raw accelerometer values [acceleration in g force]
-* Gyroscope --> Outputs raw gyroscope values [angular velocity in deg/s]
+* Gyroscope --> Outputs raw gyroscope values [angular velocity in deg/s] and includes a calibration
 * SDLog --> Logs accelerometer and gyroscope values to SD card
 * Main --> Logs values to SD card and controls vehicle
 
@@ -24,12 +24,12 @@ Values retrieved from the MPU-6050 Register Map and Descriptions Revision 4.2 lo
 
 * main --> Run this script to call all other MATLAB functions. Specify file names for reading here.
 * scale --> Find the ratio of pixels to cm in the real domain.
-* positionLogger --> Logs the x and y coordinates of the centroid of the tracking disk from masking function.
-* createMask --> Filters for orange tracking disk.
-* fileReader --> Reads the .csv file(s) recorded by the Arduino
-* cleanUpFreq --> Perform FFT and builds a digital filter to smooth sensor data.
+* positionLogger --> Logs the x and y coordinates of the centroid of the tracking disk from a masking function.
+* fileReader --> Reads the .csv file recorded by the Arduino
+* cleanData --> Applies filtfilt and a moving mean average to clean sensor data
 * dataSlicer --> Matches the sensor and video data. Removes stationary data.
-* angleVelCalc --> Smooth centroid data and use it to calculate radius and angular velocity.
+* createFit --> Fits data with a gaussian curve
+* circleFilter --> Finds the radius of the circles
 * plotter --> Creates multiple graphs of all the data
 
 ## Other
@@ -38,9 +38,7 @@ Values retrieved from the MPU-6050 Register Map and Descriptions Revision 4.2 lo
 * Calibration_Blobs --> Print at "actual size". Do not scale! Used for scale.m. Ensure that calibration blobs are located at same height as tracking circle.
 
 ## To be Completed
-* Hold the car stationary (and wheels) stationary
-* Add parallel computing toolbox to decrease computation time
-* Get instantaneous velocity from w
-* Update the README with new functions
-* Use a different curve fit?
+
+* Use a different curve fit? --> Even required?
 * Do I need to resample the data anywhere?
+* Plot instantaneous velocity (radius * wz)
