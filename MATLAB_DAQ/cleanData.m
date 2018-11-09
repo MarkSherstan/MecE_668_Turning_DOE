@@ -8,125 +8,38 @@ end
 
 
 function [dataOut] = cleanA(a,t)
-
-  % Set up starting variables
-  Fs = mean(t.frequency);
-  T = 1/Fs;
-  L = length(t.seconds);
-
-  % Plot original data in time domain
-  figure(1)
-
-  subplot(3,1,1)
-  plot(t.seconds,a.x)
-  title('Time Domain Plot X')
-  xlabel('time (s)')
-  ylabel('magnitude')
-
-  subplot(3,1,2)
-  plot(t.seconds,a.y)
-  title('Time Domain Plot Y')
-  xlabel('time (s)')
-  ylabel('magnitude')
-
-  subplot(3,1,3)
-  plot(t.seconds,a.z)
-  title('Time Domain Plot Z')
-  xlabel('time (s)')
-  ylabel('magnitude')
-
-  % Perfom FFT
-  Y.x = fft(a.x);
-  P2.x = abs(Y.x/L);
-  P1.x = P2.x(1:L/2+1);
-  P1.x(2:end-1) = 2*P1.x(2:end-1);
-  f.x = Fs*(0:(L/2))/L;
-
-  Y.y = fft(a.y);
-  P2.y = abs(Y.y/L);
-  P1.y = P2.y(1:L/2+1);
-  P1.y(2:end-1) = 2*P1.y(2:end-1);
-  f.y = Fs*(0:(L/2))/L;
-
-  Y.z = fft(a.z);
-  P2.z = abs(Y.z/L);
-  P1.z = P2.z(1:L/2+1);
-  P1.z(2:end-1) = 2*P1.z(2:end-1);
-  f.z = Fs*(0:(L/2))/L;
-
-  % Plot frequency domain
-  figure(2)
-
-  subplot(3,1,1)
-  plot(f.x,P1.x)
-  title('Frequency Domain Plot X')
-  xlabel('f (Hz)')
-  ylabel('|P1(f)|')
-
-  subplot(3,1,2)
-  plot(f.y,P1.y)
-  title('Frequency Domain Plot Y')
-  xlabel('f (Hz)')
-  ylabel('|P1(f)|')
-
-  subplot(3,1,3)
-  plot(f.z,P1.z)
-  title('Frequency Domain Plot Z')
-  xlabel('f (Hz)')
-  ylabel('|P1(f)|')
-
   x = 0;
   while (x ~= 1)
 
     if x == 1
       break
     else
-      cutOffFreq.x = input('Cut off frequency x: ');
-      cutOffFreq.y = input('Cut off frequency y: ');
-      cutOffFreq.z = input('Cut off frequency z: ');
+      n = input('Window size of zero phase filter [10 normal]? ');
     end
 
-    % Design a 6th order butterworth filter based off the frequnecy domain plot
-    fc.x = cutOffFreq.x;
-    fc.y = cutOffFreq.y;
-    fc.z = cutOffFreq.z;
+    % Filter data with a zero phase average filter
+    wwfilter = struct();
+    dataOut.x = filtfilt(ones(1,n)/n,1,a.x);
+    dataOut.y = filtfilt(ones(1,n)/n,1,a.y);
+    dataOut.z = filtfilt(ones(1,n)/n,1,a.z);
 
-    fs = Fs;
+    % Display results
+    close all
+    figure(1), hold on
 
-    [B,A] = butter(6,fc.x/(fs/2));
-    dataOut.x = filter(B,A,a.x);
+    plot(t.seconds,a.x,'-r',t.seconds,a.y,'-g',t.seconds,a.z,'-b')
+    plot(t.seconds,dataOut.x,'-r','LineWidth',2.5)
+    plot(t.seconds,dataOut.y,'-g','LineWidth',2.5)
+    plot(t.seconds,dataOut.z,'-b','LineWidth',2.5)
 
-    [B,A] = butter(6,fc.y/(fs/2));
-    dataOut.y = filter(B,A,a.y);
-
-    [B,A] = butter(6,fc.z/(fs/2));
-    dataOut.z = filter(B,A,a.z);
-
-    % Plot the filtered data back in the time domain
-    figure(3)
-
-    subplot(3,1,1)
-    plot(t.seconds,dataOut.x)
-    title('Time Domain Plot - Filtered - X')
-    xlabel('time (s)')
-    ylabel('magnitude')
-
-    subplot(3,1,2)
-    plot(t.seconds,dataOut.y)
-    title('Time Domain Plot - Filtered - Y')
-    xlabel('time (s)')
-    ylabel('magnitude')
-
-    subplot(3,1,3)
-    plot(t.seconds,dataOut.z)
-    title('Time Domain Plot - Filtered - Z')
-    xlabel('time (s)')
-    ylabel('magnitude')
+    title('Original Data and Filtered Data')
+    ylabel('Acceleration [g]')
+    xlabel('Time [s]')
+    legend('a_x original','a_y original','a_z original','a_x','a_y','a_z')
 
     % Get information from the user
-    x = input('Happy with the accelerometer data (1 0)? ');
+    x = input('Happy with accelerometer data (1 0)? ');
   end
-
 end
 
 
@@ -138,27 +51,27 @@ function [dataOut] = cleanW(w,t)
     if x == 1
       break
     else
-      smoothCoef = input('How many points to smooth data [25 normal]? ');
+      n = input('How many points to smooth data [25 normal]? ');
     end
 
-    % Adjust the data as required
-    dataOut.x = movmean(w.x,smoothCoef);
-    dataOut.y = movmean(w.y,smoothCoef);
-    dataOut.z = movmean(w.z,smoothCoef);
+    % Adjust the data as required with a moving middle average
+    dataOut.x = movmean(w.x,n);
+    dataOut.y = movmean(w.y,n);
+    dataOut.z = movmean(w.z,n);
 
     % Display results
     close all
-    figure(1)
+    figure(1), hold on
 
-    subplot(2,1,1)
-    plot(t.seconds,w.x,t.seconds,w.y,t.seconds,w.z)
-    title('Original Data')
-    legend('w_x','w_y','w_z')
+    plot(t.seconds,w.x,'-r',t.seconds,w.y,'-g',t.seconds,w.z,'-b')
+    plot(t.seconds,dataOut.x,'-r','LineWidth',2.5)
+    plot(t.seconds,dataOut.y,'-g','LineWidth',2.5)
+    plot(t.seconds,dataOut.z,'-b','LineWidth',2.5)
 
-    subplot(2,1,2)
-    plot(t.seconds,dataOut.x,t.seconds,dataOut.y,t.seconds,dataOut.z)
-    title('Cleaned Data')
-    legend('w_x','w_y','w_z')
+    title('Original Data and Filtered Data')
+    ylabel('Angular Velocity [deg/s]')
+    xlabel('Time [s]')
+    legend('w_x original','w_y original','w_z original','w_x','w_y','w_z')
 
     % Get information from the user
     x = input('Happy with gyro data (1 0)? ');
