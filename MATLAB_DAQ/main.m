@@ -7,7 +7,7 @@ videoFileName = 'Trial#.mp4';
 dataFileName = 'Trial#.csv';
 
 % Get scale
-scale = scale(videoFileName,true);
+[scale red blue green] = scale(videoFileName,true);
 
 % Calculate positions
 pos = positionLogger(videoFileName);
