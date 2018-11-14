@@ -30,7 +30,7 @@ function [posZerod,radius] = circleFilter(pos,scale,flag)
   end
 
   % Create two column vectors for each circle centered about its zero point
-  k = 1;
+  k = idx(1);
   posZeroX = zeros(length(posx),1);
   posZeroY = zeros(length(posy),1);
 
@@ -88,7 +88,7 @@ function [posZerod,radius] = circleFilter(pos,scale,flag)
     plot(radius.meters)
     title('Circle Radius as a function of Frame Number')
     xlabel('Frame number')
-    ylabel('Radius of Circle [cm]')
+    ylabel('Radius of Circle [m]')
 
   end
 
