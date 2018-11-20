@@ -26,4 +26,4 @@ pos = positionLogger(videoFileName);
 
 % Plot the results
 close all
-plotter(pos, posZerod, radius, aa, ww, tt)
+plotter(pospos, posZerod, radius, aa, ww, tt)
