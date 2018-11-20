@@ -64,16 +64,16 @@ function [BW,maskedRGBImage] = createRedMask(RGB)
 I = rgb2hsv(RGB);
 
 % Define thresholds for channel 1 based on histogram settings
-channel1Min = 0.935;
-channel1Max = 0.021;
+channel1Min = 0.932;
+channel1Max = 0.049;
 
 % Define thresholds for channel 2 based on histogram settings
-channel2Min = 0.309;
-channel2Max = 1.000;
+channel2Min = 0.273;
+channel2Max = 0.434;
 
 % Define thresholds for channel 3 based on histogram settings
-channel3Min = 0.000;
-channel3Max = 1.000;
+channel3Min = 0.561;
+channel3Max = 0.686;
 
 % Create mask based on chosen histogram thresholds
 sliderBW = ( (I(:,:,1) >= channel1Min) | (I(:,:,1) <= channel1Max) ) & ...
@@ -100,16 +100,16 @@ function [BW,maskedRGBImage] = createBlueMask(RGB)
 I = rgb2hsv(RGB);
 
 % Define thresholds for channel 1 based on histogram settings
-channel1Min = 0.460;
-channel1Max = 0.714;
+channel1Min = 0.545;
+channel1Max = 0.708;
 
 % Define thresholds for channel 2 based on histogram settings
-channel2Min = 0.309;
+channel2Min = 0.337;
 channel2Max = 1.000;
 
 % Define thresholds for channel 3 based on histogram settings
-channel3Min = 0.000;
-channel3Max = 1.000;
+channel3Min = 0.406;
+channel3Max = 0.686;
 
 % Create mask based on chosen histogram thresholds
 sliderBW = (I(:,:,1) >= channel1Min ) & (I(:,:,1) <= channel1Max) & ...
@@ -135,16 +135,16 @@ function [BW,maskedRGBImage] = createGreenMask(RGB)
 I = rgb2hsv(RGB);
 
 % Define thresholds for channel 1 based on histogram settings
-channel1Min = 0.256;
-channel1Max = 0.447;
+channel1Min = 0.284;
+channel1Max = 0.382;
 
 % Define thresholds for channel 2 based on histogram settings
-channel2Min = 0.309;
-channel2Max = 1.000;
+channel2Min = 0.050;
+channel2Max = 0.392;
 
 % Define thresholds for channel 3 based on histogram settings
-channel3Min = 0.000;
-channel3Max = 1.000;
+channel3Min = 0.441;
+channel3Max = 0.591;
 
 % Create mask based on chosen histogram thresholds
 sliderBW = (I(:,:,1) >= channel1Min ) & (I(:,:,1) <= channel1Max) & ...
