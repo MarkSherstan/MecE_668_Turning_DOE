@@ -21,7 +21,7 @@ axis equal
 figure
 r = resample(radius.meters,length(t.seconds),length(radius.meters));
 plot(t.seconds,r)
-title('Circle Radius as a function of Frame Number')
+title('Circle Radius as a function of Time')
 xlabel('Time [s]')
 ylabel('Radius of Circle [m]')
 
@@ -62,7 +62,7 @@ Leg = legend([leftA; rightW], {'a_x','a_y','a_z','w_x','w_y','w_z'});
 
 
 figure
-instantV = r.*w.z;
+instantV = r.*w.z*0.0174533;
 plot(t.seconds,instantV)
 title('Instantaneous velocity as a function of Time')
 xlabel('Time [s]')
