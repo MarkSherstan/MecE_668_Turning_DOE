@@ -46,8 +46,8 @@ for ii = 1:16
 %     legend(str')
 %     hold off
 
-[idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR] = circleFilter2000(pospos,scale,false);
-%out = plotter(pospos, posZerod, radiusOut, aa, ww, tt,idxCenter,idxRadius);
+[idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,qwe,ert] = circleFilter2000(pospos,scale,false);
+out = plotter(pospos, posZerod, radiusOut, aa, ww, tt,idxCenter,idxRadius);
 
 %   radiusOut = movmean(radiusOut,1);
 %
@@ -69,8 +69,9 @@ for ii = 1:16
   hold off
   title(num2str(ii))
 
+  
   figure(2)
-
+  
   subplot(4,4,ii)
   hold on
   plot(perCentChangeSum,'-k')
@@ -79,13 +80,12 @@ for ii = 1:16
   hold off
   title(num2str(ii))
 
-  % subplot(4,4,ii)
-  % hold on
-  % %plot(sqrt(center.x.^2 + center.y.^2))
-  % %plot(center.x)
-  % %plot(center.y)
-  % plot((center.x + center.y)/2)
-  % hold off
+  
+  
+  figure(3)
+  subplot(4,4,ii)
+  plot(pospos.x,pospos.y)
+  axis equal
 
 
 

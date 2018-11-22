@@ -1,4 +1,4 @@
-function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR] = circleFilter2000(pos,scale,flag)
+function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,A,B] = circleFilter2000(pos,scale,flag)
 
   % Average 5 points forward and backward
   aa = movmean(pos.x,[4 4]);
@@ -25,11 +25,18 @@ function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR] 
   percentChangeY = abs(yy./center.y(1:end-1));
   perCentChangeSum = percentChangeX + percentChangeY;
 
-  for ii = 20:length(perCentChangeSum)
-    if perCentChangeSum(ii) > 0.05;
+  %Smooth any single peaks, cut off first 10% of data
+  perCentChangeSum = movmean(perCentChangeSum,3);
+  idx1 = round(length(perCentChangeSum)*0.15);
+  perCentChangeSum(1:idx1) = nan;
+  A = cumsum(perCentChangeSum,'omitnan');
+
+
+  for ii = 1:length(perCentChangeSum)
+    if A(ii) > 1;
       %fprintf('\nChange in circle position (> 7%%)\n')
       %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,perCentChangeSum(ii)*100)
-      idxCenter = ii*15;
+      idxCenter = ii*8;
       break
     end
   end
@@ -40,25 +47,20 @@ function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR] 
 
   percentChangeR = abs(rrr./R(1:end-1));
 
-  for ii = 20:length(percentChangeR)
-    if percentChangeR(ii) > 0.05;
+  % Smooth any single peaks, cut off first 10% of data
+  percentChangeR = movmean(percentChangeR,3);
+  idx2 = round(length(percentChangeR)*0.15);
+  percentChangeR(1:idx2) = nan;
+  B = cumsum(percentChangeR,'omitnan');
+
+  for ii = 1:length(percentChangeR)
+    if B(ii) > 1;
       %fprintf('Change in radius (> 7%%)\n')
       %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,percentChangeR(ii)*100)
-      idxRadius = ii*15;
+      idxRadius = ii*8;
       break
     end
   end
-
-  %Smooth any single peaks
-  perCentChangeSum = movmean(perCentChangeSum,3);
-  percentChangeR = movmean(percentChangeR,3);
-
-  idx1 = round(length(perCentChangeSum)*0.10);
-  idx2 = round(length(percentChangeR)*0.10);
-  perCentChangeSum(1:idx1) = nan;
-  percentChangeR(1:idx2) = nan;
-
-
 
 
 if flag == true

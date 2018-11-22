@@ -66,9 +66,9 @@ idxRadius = round(idxRadius*(length(t.seconds)/length(radius)));
 %
 
 %
-% figure
+figure
 instantV = r.*w.z*0.0174533;
-% hold on
+hold on
 % plot(t.seconds,instantV,'-k')
 % plot(t.seconds(idxCenter),instantV(idxCenter),'or','MarkerSize',15,'LineWidth',4)
 % plot(t.seconds(idxRadius),instantV(idxRadius),'ob','MarkerSize',15,'LineWidth',4)
@@ -76,7 +76,7 @@ instantV = r.*w.z*0.0174533;
 % xlabel('Time [s]')
 % ylabel('Instantaneous Velocity [m/s]')
 % legend('Instantaneous V','Center Slip','Radius Slip','Location','SouthEast')
-% hold off
+hold off
 
 out = min([instantV(idxCenter) instantV(idxRadius)]);
 fprintf('Slip at %0.3f [m/s]\n',out)
