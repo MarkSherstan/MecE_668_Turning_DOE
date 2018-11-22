@@ -45,9 +45,19 @@ for ii = 1:16
 %     ylabel('Instantaneous Velocity [m/s]')
 %     legend(str')
 %     hold off
-
-[idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,qwe,ert] = circleFilter2000(pospos,scale,false);
-out = plotter(pospos, posZerod, radiusOut, aa, ww, tt,idxCenter,idxRadius);
+if ii == 1
+  fprintf('%0.0f\t\t\t\t\t\t\t',ii)
+elseif ii == 8
+  fprintf('%0.0f\t\t\t\t\t\t\t',ii)
+elseif ii == 11
+  fprintf('%0.0f\t\t\t\t\t\t\t',ii)
+elseif ii == 15
+  fprintf('%0.0f\t\t\t\t\t\t\t',ii)
+else
+  fprintf('%0.0f  ',ii)
+end
+[idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,A,B,C,idxBoth] = circleFilter2000(pospos,scale,false);
+out = plotter(pospos, posZerod, radiusOut, aa, ww, tt,idxCenter,idxRadius,idxBoth);
 
 %   radiusOut = movmean(radiusOut,1);
 %
@@ -59,41 +69,51 @@ out = plotter(pospos, posZerod, radiusOut, aa, ww, tt,idxCenter,idxRadius);
 %   %plot(radiusOut,'o')
 %   hold off
 %   title('Radius')
-  figure(1)
+%   figure(1)
+%
+%   subplot(4,4,ii)
+%   hold on
+%   plot(cumsum(perCentChangeSum,'omitnan'),'-k')
+%   plot(cumsum(percentChangeR,'omitnan'),'-r')
+%   ylim([0 2])
+%   hold off
+%   title(num2str(ii))
+%
+%
+  % figure(2)
+  %
+  % subplot(4,4,ii)
+  % hold on
+  % plot(perCentChangeSum,'-k')
+  % plot(percentChangeR,'-r')
+  % ylim([0 0.2])
+  % hold off
+  % title(num2str(ii))
 
-  subplot(4,4,ii)
-  hold on
-  plot(cumsum(perCentChangeSum,'omitnan'),'-k')
-  plot(cumsum(percentChangeR,'omitnan'),'-r')
-  ylim([0 2])
-  hold off
-  title(num2str(ii))
+figure(4)
 
-  
-  figure(2)
-  
-  subplot(4,4,ii)
-  hold on
-  plot(perCentChangeSum,'-k')
-  plot(percentChangeR,'-r')
-  ylim([0 0.2])
-  hold off
-  title(num2str(ii))
+subplot(4,4,ii)
+hold on
+plot(2*A,'-r')
+plot(B,'-b')
+plot(C,'-k')
+ylim([0 6])
+hold off
+title(num2str(ii))
 
-  
-  
   figure(3)
   subplot(4,4,ii)
   plot(pospos.x,pospos.y)
   axis equal
+  title(num2str(ii))
 
 
-
-% A(ii,1) = ii;
-% A(ii,2) = out;
+Aa(ii,1) = ii;
+Aa(ii,2) = out;
 
 end
 
+results = sortrows(Aa,2)
 clear str
 %
 % for ii = 1:3

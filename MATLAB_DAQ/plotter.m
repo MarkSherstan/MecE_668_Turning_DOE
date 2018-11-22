@@ -1,9 +1,10 @@
-function [out] = plotter(pos,posZerod,radius,a,w,t,idxCenter,idxRadius)
+function [out] = plotter(pos,posZerod,radius,a,w,t,idxCenter,idxRadius,idxBoth)
 
 r = resample(radius,length(t.seconds),length(radius))';
+
 idxCenter = round(idxCenter*(length(t.seconds)/length(radius)));
 idxRadius = round(idxRadius*(length(t.seconds)/length(radius)));
-
+idxBoth = round(idxBoth*(length(t.seconds)/length(radius)));
 
 
 % figure
@@ -66,7 +67,7 @@ idxRadius = round(idxRadius*(length(t.seconds)/length(radius)));
 %
 
 %
-figure
+% figure
 instantV = r.*w.z*0.0174533;
 hold on
 % plot(t.seconds,instantV,'-k')
@@ -78,7 +79,7 @@ hold on
 % legend('Instantaneous V','Center Slip','Radius Slip','Location','SouthEast')
 hold off
 
-out = min([instantV(idxCenter) instantV(idxRadius)]);
-fprintf('Slip at %0.3f [m/s]\n',out)
+out = min([instantV(idxCenter) instantV(idxRadius) instantV(idxBoth)]);
+fprintf('t_radius: %3.1f t_center %3.1f t_both %3.1f\n',t.seconds(idxRadius),t.seconds(idxCenter),t.seconds(idxBoth))
 
 end

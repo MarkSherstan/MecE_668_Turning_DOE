@@ -1,4 +1,4 @@
-function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,A,B] = circleFilter2000(pos,scale,flag)
+function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,A,B,C,idxBoth] = circleFilter2000(pos,scale,flag)
 
   % Average 5 points forward and backward
   aa = movmean(pos.x,[4 4]);
@@ -26,8 +26,8 @@ function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,A
   perCentChangeSum = percentChangeX + percentChangeY;
 
   %Smooth any single peaks, cut off first 10% of data
-  perCentChangeSum = movmean(perCentChangeSum,3);
-  idx1 = round(length(perCentChangeSum)*0.15);
+  perCentChangeSum = movmean(perCentChangeSum,6);
+  idx1 = round(length(perCentChangeSum)*0.20);
   perCentChangeSum(1:idx1) = nan;
   A = cumsum(perCentChangeSum,'omitnan');
 
@@ -48,19 +48,30 @@ function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,A
   percentChangeR = abs(rrr./R(1:end-1));
 
   % Smooth any single peaks, cut off first 10% of data
-  percentChangeR = movmean(percentChangeR,3);
-  idx2 = round(length(percentChangeR)*0.15);
+  percentChangeR = movmean(percentChangeR,6);
+  idx2 = round(length(percentChangeR)*0.20);
   percentChangeR(1:idx2) = nan;
   B = cumsum(percentChangeR,'omitnan');
 
   for ii = 1:length(percentChangeR)
-    if B(ii) > 1;
+    if B(ii) > 2;
       %fprintf('Change in radius (> 7%%)\n')
       %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,percentChangeR(ii)*100)
       idxRadius = ii*8;
       break
     end
   end
+
+  %% For both
+  %%%%%%%%%%%%%%%%%%%%%%%%%
+  C = A + B;
+  for ii = 1:length(C)
+    if C(ii) > 3;
+      idxBoth = ii*8;
+      break
+    end
+  end
+
 
 
 if flag == true
@@ -83,6 +94,7 @@ if flag == true
   % plot(R*scale)
   % hold off
 end
+
 
   % Output results resampled to original size
   radiusOut = resample(R,length(pos.x),length(R))*scale;

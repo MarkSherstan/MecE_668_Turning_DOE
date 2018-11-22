@@ -1,19 +1,19 @@
 % Zerod Plot
 % xSpot = 6.163;
-% 
+%
 % idx = find(posZerod.x > xSpot - 0.1 & posZerod.x < xSpot + 0.1);
-% 
+%
 % tt.seconds(idx)
 % posZerod.y(idx)
 
 
-% % Position Plot
-% xSpot2 = 729.1;
-% idx2 = find(pospos.x > xSpot2 - 1 & pospos.x < xSpot2 + 1);
-% 
-% tt.seconds(idx2)
-% 
-% pospos.y(idx2)
+% Position Plot
+xSpot2 = 692.8;
+idx2 = find(pospos.x > xSpot2 - 1 & pospos.x < xSpot2 + 1);
+
+tt.seconds(idx2)
+
+pospos.y(idx2)
 
 
 % A = [
@@ -33,15 +33,13 @@
 % 14 10.99 0.895;
 % 15 9.465 0.734;
 % 16 26.75 1.511];
-% 
+%
 % AA = sortrows(A,3);
 % out = [AA(:,1) AA(:,3)]
-% 
+%
 % % B = [
 % 1 17.49 1.235;
 % 2 17.12 1.217;
 % 3 19.36 1.111];
-% 
+%
 % out2 = mean(B(:,3))
-
-
