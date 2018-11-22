@@ -1,4 +1,4 @@
-function [idxCenter,idxRadius,radiusOut] = circleFilter2000(pos,scale,flag)
+function [idxCenter,idxRadius,radiusOut,center] = circleFilter2000(pos,scale,flag)
 
   % Average 5 points forward and backward
   aa = movmean(pos.x,[5 5]);
@@ -26,9 +26,9 @@ function [idxCenter,idxRadius,radiusOut] = circleFilter2000(pos,scale,flag)
   perCentChangeSum = percentChangeX + percentChangeY;
 
   for ii = 20:length(perCentChangeSum)
-    if perCentChangeSum(ii) > 0.07;
-      fprintf('\nChange in circle position (> 7%%)\n')
-      fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,perCentChangeSum(ii)*100)
+    if perCentChangeSum(ii) > 0.05;
+      %fprintf('\nChange in circle position (> 7%%)\n')
+      %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,perCentChangeSum(ii)*100)
       idxCenter = ii*15;
       break
     end
@@ -41,32 +41,34 @@ function [idxCenter,idxRadius,radiusOut] = circleFilter2000(pos,scale,flag)
   percentChangeR = abs(rrr./R(1:end-1));
 
   for ii = 20:length(percentChangeR)
-    if percentChangeR(ii) > 0.07;
-      fprintf('Change in radius (> 7%%)\n')
-      fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,percentChangeR(ii)*100)
+    if percentChangeR(ii) > 0.05;
+      %fprintf('Change in radius (> 7%%)\n')
+      %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,percentChangeR(ii)*100)
       idxRadius = ii*15;
       break
     end
   end
 
-  close all
+if flag == true
+  % close all
 
-  figure
-  hold on
-  plot(perCentChangeSum,'-k')
-  plot(percentChangeR,'-r')
-  title('Percent Changes')
-  hold off
+  % figure
+  % hold on
+  % plot(perCentChangeSum,'-k')
+  % plot(percentChangeR,'-r')
+  % title('Percent Changes')
+  % hold off
 
-  figure
-  plot(pos.x,pos.y)
-  axis equal
+  % figure
+  % plot(pos.x,pos.y)
+  % axis equal
 
   figure
   hold on
   plot(R*scale,'o')
   plot(R*scale)
   hold off
+end
 
   % Output results resampled to original size
   radiusOut = resample(R,length(pos.x),length(R))*scale;

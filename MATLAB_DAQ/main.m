@@ -22,8 +22,10 @@ pos = positionLogger(videoFileName);
 [aa,ww,tt,pospos,posResample] = dataSlicer(aa,ww,t,pos);
 
 % Find the circle radius for slip detection and instantaneous velocity
-[posZerod,radius] = circleFilter(pospos,scale,false);
+%[posZerod,radius] = circleFilter(pospos,scale,false);
+[idxCenter,idxRadius,radiusOut] = circleFilter2000(pospos,scale,false);
 
 % Plot the results
 close all
-plotter(pospos, posZerod, radius, aa, ww, tt)
+%plotter(pospos, posZerod, radius, aa, ww, tt)
+plotter(pospos, posZerod, radiusOut, aa, ww, tt,idxCenter,idxRadius)
