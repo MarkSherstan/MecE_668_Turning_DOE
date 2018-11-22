@@ -1,12 +1,12 @@
-function [idxCenter,idxRadius,radiusOut,center] = circleFilter2000(pos,scale,flag)
+function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR] = circleFilter2000(pos,scale,flag)
 
   % Average 5 points forward and backward
-  aa = movmean(pos.x,[5 5]);
-  bb = movmean(pos.y,[5 5]);
+  aa = movmean(pos.x,[4 4]);
+  bb = movmean(pos.y,[4 4]);
 
   % Use every 15th point to formulate a circle
-  posx = aa(1:15:end);
-  posy = bb(1:15:end);
+  posx = aa(1:8:end);
+  posy = bb(1:8:end);
 
   % Find the radius and center location
   for i = 1:length(posx) - 3
@@ -49,25 +49,37 @@ function [idxCenter,idxRadius,radiusOut,center] = circleFilter2000(pos,scale,fla
     end
   end
 
+  %Smooth any single peaks
+  perCentChangeSum = movmean(perCentChangeSum,3);
+  percentChangeR = movmean(percentChangeR,3);
+
+  idx1 = round(length(perCentChangeSum)*0.10);
+  idx2 = round(length(percentChangeR)*0.10);
+  perCentChangeSum(1:idx1) = nan;
+  percentChangeR(1:idx2) = nan;
+
+
+
+
 if flag == true
   % close all
 
-  % figure
-  % hold on
-  % plot(perCentChangeSum,'-k')
-  % plot(percentChangeR,'-r')
-  % title('Percent Changes')
-  % hold off
-
+  figure
+  hold on
+  plot(perCentChangeSum,'-k')
+  plot(percentChangeR,'-r')
+  title('Percent Changes')
+  hold off
+  %
   % figure
   % plot(pos.x,pos.y)
   % axis equal
 
-  figure
-  hold on
-  plot(R*scale,'o')
-  plot(R*scale)
-  hold off
+  % figure
+  % hold on
+  % plot(R*scale,'o')
+  % plot(R*scale)
+  % hold off
 end
 
   % Output results resampled to original size

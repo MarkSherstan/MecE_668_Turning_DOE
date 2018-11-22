@@ -1,7 +1,7 @@
 clear all
-close all
+%close all
 clc
-% 
+%
 for ii = 1:16
     str{ii} = strcat('run',num2str(ii),'.mat');
     load(str{ii})
@@ -16,7 +16,7 @@ for ii = 1:16
 %     ylabel('Radius of Circle [m]')
 %     legend(str')
 %     hold off
-% 
+%
 %     figure(2)
 %     hold on
 %     plot(tt.seconds,ww.z)
@@ -25,7 +25,7 @@ for ii = 1:16
 %     ylabel('Angular velocity [deg/s]')
 %     legend(str')
 %     hold off
-% 
+%
 %     figure(3)
 %     hold on
 %     plot(posZerod.x,posZerod.y)
@@ -35,7 +35,7 @@ for ii = 1:16
 %     axis equal
 %     legend(str')
 %     hold off
-% 
+%
 %     figure(4)
 %     hold on
 %     instantV = r.*ww.z*0.0174533;
@@ -46,35 +46,60 @@ for ii = 1:16
 %     legend(str')
 %     hold off
 
-[idxCenter,idxRadius,radiusOut, center] = circleFilter2000(pospos,scale,false);
-out = plotter(pospos, posZerod, radiusOut, aa, ww, tt,idxCenter,idxRadius);
+[idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR] = circleFilter2000(pospos,scale,false);
+%out = plotter(pospos, posZerod, radiusOut, aa, ww, tt,idxCenter,idxRadius);
 
-  radiusOut = movmean(radiusOut,50);
-  
+%   radiusOut = movmean(radiusOut,1);
+%
+%   figure(1)
+%
+%   hold on
+%   subplot(4,4,ii)
+%   plot(radiusOut)
+%   %plot(radiusOut,'o')
+%   hold off
+%   title('Radius')
   figure(1)
-  hold on
+
   subplot(4,4,ii)
-  plot(radiusOut)
-  %plot(radiusOut,'o')
+  hold on
+  plot(cumsum(perCentChangeSum,'omitnan'),'-k')
+  plot(cumsum(percentChangeR,'omitnan'),'-r')
+  ylim([0 2])
   hold off
+  title(num2str(ii))
 
   figure(2)
-  hold on 
-  subplot(4,4,ii)
-  plot(norm([center.x center.y]))
-  hold off
 
-A(ii,1) = ii;
-A(ii,2) = out;
+  subplot(4,4,ii)
+  hold on
+  plot(perCentChangeSum,'-k')
+  plot(percentChangeR,'-r')
+  ylim([0 0.2])
+  hold off
+  title(num2str(ii))
+
+  % subplot(4,4,ii)
+  % hold on
+  % %plot(sqrt(center.x.^2 + center.y.^2))
+  % %plot(center.x)
+  % %plot(center.y)
+  % plot((center.x + center.y)/2)
+  % hold off
+
+
+
+% A(ii,1) = ii;
+% A(ii,2) = out;
 
 end
 
 clear str
-% 
+%
 % for ii = 1:3
 %     str{ii} = strcat('midPoint',num2str(ii),'.mat');
 %     load(str{ii})
-% 
+%
 % %     hold on
 % %     figure(5)
 % %     hold on
@@ -85,7 +110,7 @@ clear str
 % %     ylabel('Radius of Circle [m]')
 % %     legend(str')
 % %     hold off
-% % 
+% %
 % %     figure(6)
 % %     hold on
 % %     plot(tt.seconds,ww.z)
@@ -94,7 +119,7 @@ clear str
 % %     ylabel('Angular velocity [deg/s]')
 % %     legend(str')
 % %     hold off
-% % 
+% %
 % %     figure(7)
 % %     hold on
 % %     plot(posZerod.x,posZerod.y)
@@ -104,7 +129,7 @@ clear str
 % %     axis equal
 % %     legend(str')
 % %     hold off
-% % 
+% %
 % %     figure(8)
 % %     hold on
 % %     instantV = r.*ww.z*0.0174533;
@@ -114,10 +139,10 @@ clear str
 % %     ylabel('Instantaneous Velocity [m/s]')
 % %     legend(str')
 % %     hold off
-% 
+%
 % [idxCenter,idxRadius,radiusOut] = circleFilter2000(pospos,scale,true);
 % out = plotter(pospos, posZerod, radiusOut, aa, ww, tt,idxCenter,idxRadius);
-% 
+%
 % B(ii,1) = ii;
 % B(ii,2) = out;
 % end
