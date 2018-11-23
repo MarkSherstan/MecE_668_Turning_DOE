@@ -16,24 +16,29 @@ function [R,C] = circleFilter2000(pospos,scale)
     center.y(i) = cent(2);
   end
 
-  % Find radius index
-  idxLow = round(length(Radius)*0.05);
+  Radius = movmean(Radius,[2 2]);
+  % Find location cut off for the bottom 25% of the data
   idxHigh = round(length(Radius)*0.25);
 
-  R.std = std(Radius(idxLow:idxHigh));
-  R.mean = mean(Radius(idxLow:idxHigh));
-  R.scale = 2;
-  R.radius = movmean(Radius,[1 1]);
+  % Calculate mean and std. Set a scale for number of deviations and smooth peaks in radius
+  R.mean = mean(Radius(1:idxHigh));
+  R.std = std(Radius(1:idxHigh));
+  R.devs = 2;
+  R.radius = Radius;%movmean(Radius,[1 1]);
 
+  % Find radius values thats dont fit in the std set
   indexR = zeros(1,length(Radius));
 
-  for ii = idxLow:length(Radius)
-    if (R.radius(ii) >= (R.mean + R.std*R.scale) || R.radius(ii) <= (R.mean - R.std*R.scale))
+  for ii = idxHigh:length(Radius)
+    if (R.radius(ii) >= (R.mean + R.std*R.devs) || R.radius(ii) <= (R.mean - R.std*R.devs))
       indexR(ii) = ii;
     end
   end
 
+  % Convert index locations to a logical and add to structure
   R.idx = logical(indexR);
+
+
 
  C = 1;
 
