@@ -1,13 +1,9 @@
-%%%%%
-% Make sure data folder is added to path!!!!
-%%%%%
-
 clear all
 close all
 clc
 
 % Load in presaved Data
-load('MidPoint1.mat')
+load('./data/MidPoint1.mat')
 
 % Clean up the data
 [aa,ww] = cleanData(a,w,t);
