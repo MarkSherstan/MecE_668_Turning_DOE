@@ -1,8 +1,8 @@
-function [R,center,idxR] = circleFilter2000(pos,scale)
+function [R,C] = circleFilter2000(pospos,scale)
 
   % Average 8 points, 4 forward and 4 backward
-  aa = movmean(pos.x,[4 4]);
-  bb = movmean(pos.y,[4 4]);
+  aa = movmean(pospos.x,[4 4]);
+  bb = movmean(pospos.y,[4 4]);
 
   % Use every 8th point to formulate a circle
   posx = aa(1:8:end);
@@ -11,30 +11,33 @@ function [R,center,idxR] = circleFilter2000(pos,scale)
   % Find the radius and center location based on 3 points spaced 8 apart
   for i = 1:length(posx) - 3
     ABC = [posx(i) posy(i); posx(i+1) posy(i+1); posx(i+2) posy(i+2)];
-    [R(i) cent] = fit_circle_through_3_points(ABC);
+    [Radius(i) cent] = fit_circle_through_3_points(ABC);
     center.x(i) = cent(1);
     center.y(i) = cent(2);
   end
 
-
-
   % Find radius index
-  idxLow = round(length(R)*0.05);
-  idxHigh = round(length(R)*0.25);
+  idxLow = round(length(Radius)*0.05);
+  idxHigh = round(length(Radius)*0.25);
 
-  stdstd = std(R(idxLow:idxHigh));
-  meanmean = mean(R(idxLow:idxHigh));
-  scaleStd = 2;
+  R.std = std(Radius(idxLow:idxHigh));
+  R.mean = mean(Radius(idxLow:idxHigh));
+  R.scale = 2;
+  R.radius = movmean(Radius,[1 1]);
 
-  R = movmean(R,[1 1]);
+  indexR = zeros(1,length(Radius));
 
-  for ii = idxLow:length(R)
-    if (R(ii) >= (meanmean + stdstd*scaleStd) || R(ii) <= (meanmean - stdstd*scaleStd))
+  for ii = idxLow:length(Radius)
+    if (R.radius(ii) >= (R.mean + R.std*R.scale) || R.radius(ii) <= (R.mean - R.std*R.scale))
       indexR(ii) = ii;
     end
   end
 
-  idxR = logical(indexR);
+  R.idx = logical(indexR);
+
+ C = 1;
+
+
 
   % x = 1:length(R);
   %
@@ -54,10 +57,11 @@ function [R,center,idxR] = circleFilter2000(pos,scale)
   % title('Radius')
 
 
+
   % Output results resampled to original size
-  radiusOut = resample(R,length(pos.x),length(R))*scale;
-  center.x = resample(center.x,length(pos.x),length(center.x));
-  center.y = resample(center.y,length(pos.x),length(center.y));
+  % radiusOut = resample(R,length(pospos.x),length(R))*scale;
+  % center.x = resample(center.x,length(pospos.x),length(center.x));
+  % center.y = resample(center.y,length(pospos.x),length(center.y));
 end
 
 
