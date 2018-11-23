@@ -28,14 +28,14 @@ function [dataOut] = cleanA(a,t)
     figure(1), hold on
 
     plot(t.seconds,a.x,'-r',t.seconds,a.y,'-g',t.seconds,a.z,'-b')
-    plot(t.seconds,dataOut.x,'-r','LineWidth',2.5)
-    plot(t.seconds,dataOut.y,'-g','LineWidth',2.5)
-    plot(t.seconds,dataOut.z,'-b','LineWidth',2.5)
+    plot(t.seconds,dataOut.x,'-r','LineWidth',4)
+    plot(t.seconds,dataOut.y,'-g','LineWidth',4)
+    plot(t.seconds,dataOut.z,'-b','LineWidth',4)
 
-    title('Original Data and Filtered Data')
-    ylabel('Acceleration [g]')
-    xlabel('Time [s]')
-    legend('a_x original','a_y original','a_z original','a_x','a_y','a_z')
+    title('Original Data and Filtered Data','FontSize',16)
+    ylabel('Acceleration [g]','FontSize',16)
+    xlabel('Time [s]','FontSize',16)
+    legend('a_x original','a_y original','a_z original','a_x','a_y','a_z','FontSize',16)
 
     % Get information from the user
     x = input('Happy with accelerometer data (1 0)? ');
@@ -68,10 +68,10 @@ function [dataOut] = cleanW(w,t)
     plot(t.seconds,dataOut.y,'-g','LineWidth',2.5)
     plot(t.seconds,dataOut.z,'-b','LineWidth',2.5)
 
-    title('Original Data and Filtered Data')
-    ylabel('Angular Velocity [deg/s]')
-    xlabel('Time [s]')
-    legend('w_x original','w_y original','w_z original','w_x','w_y','w_z')
+    title('Original Data and Filtered Data','FontSize',16)
+    ylabel('Angular Velocity [deg/s]','FontSize',16)
+    xlabel('Time [s]','FontSize',16)
+    legend('w_x original','w_y original','w_z original','w_x','w_y','w_z','FontSize',16)
 
     % Get information from the user
     x = input('Happy with gyro data (1 0)? ');
