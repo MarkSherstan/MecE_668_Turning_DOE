@@ -1,4 +1,4 @@
-function [R] = circleFilter2000(pospos,scale)
+function [R] = circleFilter(pospos,scale)
 
   % Average 10 points, 5 forward and 5 backward
   aa = movmean(pospos.x,[5 5]);
