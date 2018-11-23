@@ -1,19 +1,13 @@
+%%%%%
+% Make sure data folder is added to path!!!!
+%%%%%
+
 clear all
 close all
 clc
 
-% Constant values / variables
-videoFileName = 'Trial#.mp4';
-dataFileName = 'Trial#.csv';
-
-% Get scale
-[scale red blue green] = scale(videoFileName,true);
-
-% Calculate positions
-pos = positionLogger(videoFileName);
-
-% Read in sensor data
-[a,w,t,PWM] = fileReader(dataFileName);
+% Load in presaved Data
+load('MidPoint1.mat')
 
 % Clean up the data
 [aa,ww] = cleanData(a,w,t);
