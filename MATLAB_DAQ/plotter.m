@@ -1,10 +1,31 @@
-function [out] = plotter(pos,posZerod,radius,a,w,t,idxCenter,idxRadius,idxBoth)
+function [out] = plotter(pos,radius,a,w,t,idxBoth)
 
 r = resample(radius,length(t.seconds),length(radius))';
 
-idxCenter = round(idxCenter*(length(t.seconds)/length(radius)));
-idxRadius = round(idxRadius*(length(t.seconds)/length(radius)));
+%idxCenter = round(idxCenter*(length(t.seconds)/length(radius)));
+%idxRadius = round(idxRadius*(length(t.seconds)/length(radius)));
 idxBoth = round(idxBoth*(length(t.seconds)/length(radius)));
+
+% figure
+instantV = r.*w.z*0.0174533;
+% hold on
+% % plot(t.seconds,instantV,'-k')
+% % plot(t.seconds(idxCenter),instantV(idxCenter),'or','MarkerSize',15,'LineWidth',4)
+% % plot(t.seconds(idxRadius),instantV(idxRadius),'ob','MarkerSize',15,'LineWidth',4)
+% % title('Instantaneous velocity as a function of Time')
+% % xlabel('Time [s]')
+% % ylabel('Instantaneous Velocity [m/s]')
+% % legend('Instantaneous V','Center Slip','Radius Slip','Location','SouthEast')
+% hold off
+
+%out = min([instantV(idxCenter) instantV(idxRadius) instantV(idxBoth)]);
+out = t.seconds(idxBoth);
+
+%fprintf('t_radius: %3.1f t_center %3.1f t_both %3.1f\n',t.seconds(idxRadius),t.seconds(idxCenter),t.seconds(idxBoth))
+fprintf('Slip at %3.1f (s)\n',t.seconds(idxBoth))
+
+end
+
 
 
 % figure
@@ -65,21 +86,3 @@ idxBoth = round(idxBoth*(length(t.seconds)/length(radius)));
 %
 % Leg = legend([leftA; rightW], {'a_x','a_y','a_z','w_x','w_y','w_z'});
 %
-
-%
-% figure
-instantV = r.*w.z*0.0174533;
-hold on
-% plot(t.seconds,instantV,'-k')
-% plot(t.seconds(idxCenter),instantV(idxCenter),'or','MarkerSize',15,'LineWidth',4)
-% plot(t.seconds(idxRadius),instantV(idxRadius),'ob','MarkerSize',15,'LineWidth',4)
-% title('Instantaneous velocity as a function of Time')
-% xlabel('Time [s]')
-% ylabel('Instantaneous Velocity [m/s]')
-% legend('Instantaneous V','Center Slip','Radius Slip','Location','SouthEast')
-hold off
-
-out = min([instantV(idxCenter) instantV(idxRadius) instantV(idxBoth)]);
-fprintf('t_radius: %3.1f t_center %3.1f t_both %3.1f\n',t.seconds(idxRadius),t.seconds(idxCenter),t.seconds(idxBoth))
-
-end

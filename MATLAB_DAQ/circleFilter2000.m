@@ -1,14 +1,15 @@
-function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,A,B,C,idxBoth] = circleFilter2000(pos,scale,flag)
+function [radiusOut,center,A,B,C,idxBoth,perCentChangeSum,percentChangeR] = circleFilter2000(pos,scale,flag)
+% idxCenter,idxRadius,perCentChangeSum,percentChangeR
 
-  % Average 5 points forward and backward
+  % Average 8 points, 4 forward and 4 backward
   aa = movmean(pos.x,[4 4]);
   bb = movmean(pos.y,[4 4]);
 
-  % Use every 15th point to formulate a circle
+  % Use every 8th point to formulate a circle
   posx = aa(1:8:end);
   posy = bb(1:8:end);
 
-  % Find the radius and center location
+  % Find the radius and center location based on 3 points spaced 8 apart
   for i = 1:length(posx) - 3
     ABC = [posx(i) posy(i); posx(i+1) posy(i+1); posx(i+2) posy(i+2)];
     [R(i) cent] = fit_circle_through_3_points(ABC);
@@ -32,14 +33,16 @@ function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,A
   A = cumsum(perCentChangeSum,'omitnan');
 
 
-  for ii = 1:length(perCentChangeSum)
-    if A(ii) > 1;
-      %fprintf('\nChange in circle position (> 7%%)\n')
-      %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,perCentChangeSum(ii)*100)
-      idxCenter = ii*8;
-      break
-    end
-  end
+
+
+  % for ii = 1:length(perCentChangeSum)
+  %   if A(ii) > 1;
+  %     %fprintf('\nChange in circle position (> 7%%)\n')
+  %     %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,perCentChangeSum(ii)*100)
+  %     idxCenter = ii*8;
+  %     break
+  %   end
+  % end
 
   %% For radius
   %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -52,18 +55,20 @@ function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,A
   idx2 = round(length(percentChangeR)*0.20);
   percentChangeR(1:idx2) = nan;
   B = cumsum(percentChangeR,'omitnan');
-
-  for ii = 1:length(percentChangeR)
-    if B(ii) > 2;
-      %fprintf('Change in radius (> 7%%)\n')
-      %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,percentChangeR(ii)*100)
-      idxRadius = ii*8;
-      break
-    end
-  end
+  %
+  % for ii = 1:length(percentChangeR)
+  %   if B(ii) > 2;
+  %     %fprintf('Change in radius (> 7%%)\n')
+  %     %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,percentChangeR(ii)*100)
+  %     idxRadius = ii*8;
+  %     break
+  %   end
+  % end
 
   %% For both
   %%%%%%%%%%%%%%%%%%%%%%%%%
+  A = A;
+
   C = A + B;
   for ii = 1:length(C)
     if C(ii) > 3;
@@ -77,12 +82,12 @@ function [idxCenter,idxRadius,radiusOut,center,perCentChangeSum,percentChangeR,A
 if flag == true
   % close all
 
-  figure
-  hold on
-  plot(perCentChangeSum,'-k')
-  plot(percentChangeR,'-r')
-  title('Percent Changes')
-  hold off
+  % figure
+  % hold on
+  % plot(perCentChangeSum,'-k')
+  % plot(percentChangeR,'-r')
+  % title('Percent Changes')
+  % hold off
   %
   % figure
   % plot(pos.x,pos.y)
@@ -98,7 +103,8 @@ end
 
   % Output results resampled to original size
   radiusOut = resample(R,length(pos.x),length(R))*scale;
-
+  center.x = resample(center.x,length(pos.x),length(center.x));
+  center.y = resample(center.y,length(pos.x),length(center.y));
 end
 
 
