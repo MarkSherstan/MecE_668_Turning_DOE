@@ -19,18 +19,22 @@ function [a,w,t,pos,posResample] = dataSlicer(a,w,t,pos)
 
     subplot(2,1,1)
     hold on
-    plot(x2,magW,'--k','LineWidth',1.5)
+    plot(x2,magW,'-k','LineWidth',1.5)
     plot([sliceLocationSensor(1) sliceLocationSensor(1)],ylim,'-r','LineWidth',3)
     plot([sliceLocationSensor(2) sliceLocationSensor(2)],ylim,'-r','LineWidth',3)
-    title('Slice Position of Sensor Data')
+    title('Slice Position of Sensor Data','FontSize',16)
+    xlabel('Index','FontSize',16)
+    ylabel('Magnitude of Angular Velocity [deg/s]','FontSize',16)
     hold off
 
     subplot(2,1,2)
     hold on
-    plot(x1,magPos,'--k','LineWidth',1.5)
+    plot(x1,magPos,'-k','LineWidth',1.5)
     plot([sliceLocationVideo(1) sliceLocationVideo(1)],ylim,'-r','LineWidth',3)
     plot([sliceLocationVideo(2) sliceLocationVideo(2)],ylim,'-r','LineWidth',3)
-    title('Slice Position of Video Data')
+    title('Slice Position of Video Data','FontSize',16)
+    xlabel('Index','FontSize',16)
+    ylabel('Magnitude of Acceleration [g]','FontSize',16)
     hold off
 
     % Get information from the user
