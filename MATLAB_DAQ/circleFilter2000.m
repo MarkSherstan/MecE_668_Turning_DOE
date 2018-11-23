@@ -1,5 +1,4 @@
-function [radiusOut,center,A,B,C,idxBoth,perCentChangeSum,percentChangeR] = circleFilter2000(pos,scale,flag)
-% idxCenter,idxRadius,perCentChangeSum,percentChangeR
+function [R,center,idxR] = circleFilter2000(pos,scale)
 
   % Average 8 points, 4 forward and 4 backward
   aa = movmean(pos.x,[4 4]);
@@ -17,88 +16,42 @@ function [radiusOut,center,A,B,C,idxBoth,perCentChangeSum,percentChangeR] = circ
     center.y(i) = cent(2);
   end
 
-  %% For center points
-  %%%%%%%%%%%%%%%%%%%%%%%%%
-  xx = diff(movmean(center.x,1));
-  yy = diff(movmean(center.y,1));
-
-  percentChangeX = abs(xx./center.x(1:end-1));
-  percentChangeY = abs(yy./center.y(1:end-1));
-  perCentChangeSum = percentChangeX + percentChangeY;
-
-  %Smooth any single peaks, cut off first 10% of data
-  perCentChangeSum = movmean(perCentChangeSum,6);
-  idx1 = round(length(perCentChangeSum)*0.20);
-  perCentChangeSum(1:idx1) = nan;
-  A = cumsum(perCentChangeSum,'omitnan');
 
 
+  % Find radius index
+  idxLow = round(length(R)*0.05);
+  idxHigh = round(length(R)*0.25);
 
+  stdstd = std(R(idxLow:idxHigh));
+  meanmean = mean(R(idxLow:idxHigh));
+  scaleStd = 2;
 
-  % for ii = 1:length(perCentChangeSum)
-  %   if A(ii) > 1;
-  %     %fprintf('\nChange in circle position (> 7%%)\n')
-  %     %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,perCentChangeSum(ii)*100)
-  %     idxCenter = ii*8;
-  %     break
-  %   end
-  % end
+  R = movmean(R,[1 1]);
 
-  %% For radius
-  %%%%%%%%%%%%%%%%%%%%%%%%%
-  rrr = diff(R);
-
-  percentChangeR = abs(rrr./R(1:end-1));
-
-  % Smooth any single peaks, cut off first 10% of data
-  percentChangeR = movmean(percentChangeR,6);
-  idx2 = round(length(percentChangeR)*0.20);
-  percentChangeR(1:idx2) = nan;
-  B = cumsum(percentChangeR,'omitnan');
-  %
-  % for ii = 1:length(percentChangeR)
-  %   if B(ii) > 2;
-  %     %fprintf('Change in radius (> 7%%)\n')
-  %     %fprintf('Iteration %0.0f with a value of %0.2f%%\n\n',ii,percentChangeR(ii)*100)
-  %     idxRadius = ii*8;
-  %     break
-  %   end
-  % end
-
-  %% For both
-  %%%%%%%%%%%%%%%%%%%%%%%%%
-  A = A;
-
-  C = A + B;
-  for ii = 1:length(C)
-    if C(ii) > 3;
-      idxBoth = ii*8;
-      break
+  for ii = idxLow:length(R)
+    if (R(ii) >= (meanmean + stdstd*scaleStd) || R(ii) <= (meanmean - stdstd*scaleStd))
+      indexR(ii) = ii;
     end
   end
 
+  idxR = logical(indexR);
 
-
-if flag == true
-  % close all
-
-  % figure
-  % hold on
-  % plot(perCentChangeSum,'-k')
-  % plot(percentChangeR,'-r')
-  % title('Percent Changes')
-  % hold off
+  % x = 1:length(R);
   %
-  % figure
-  % plot(pos.x,pos.y)
-  % axis equal
-
-  % figure
+  % figure(1)
+  %
   % hold on
-  % plot(R*scale,'o')
-  % plot(R*scale)
+  %   plot(x,R)
+  %   plot(x(L),R(L),'*r')
+  %
+  %   line([idxHigh idxHigh], [0 1]);
+  %
+  %   line([1 length(R)], [meanmean meanmean])
+  %
+  %   line([1 length(R)], [meanmean+stdstd*scaleStd meanmean+stdstd*scaleStd])
+  %   line([1 length(R)], [meanmean-stdstd*scaleStd meanmean-stdstd*scaleStd])
   % hold off
-end
+  % title('Radius')
 
 
   % Output results resampled to original size
