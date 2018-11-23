@@ -21,59 +21,8 @@ for ii = 1:16
 %
 % [radiusOut,center,A,B,C,idxBoth,D,E] = circleFilter2000(pospos,scale,false);
 % out = plotter(pospos, radiusOut, aa, ww, tt, idxBoth);
-%
-%
-% %%%%%%% RADIUS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% idxLow = round(length(radiusOut)*0.05);
-% idxHigh = round(length(radiusOut)*0.25);
-% ttt = tt.seconds;
-%
-% stdstd = std(radiusOut(idxLow:idxHigh));
-% meanmean = mean(radiusOut(idxLow:idxHigh));
-% scaleStd = 2;
-%
-%   figure(1)
-%
-%   hold on
-%     subplot(4,4,ii)
-%     plot(radiusOut)
-%
-%     line([idxHigh idxHigh], [0 1]);
-%
-%     line([1 length(radiusOut)], [meanmean meanmean])
-%
-%     line([1 length(radiusOut)], [meanmean+stdstd*scaleStd meanmean+stdstd*scaleStd])
-%     line([1 length(radiusOut)], [meanmean-stdstd*scaleStd meanmean-stdstd*scaleStd])
-%   hold off
-%   title('Radius')
-%
-%
-% %%%%%%% Center %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   changeX = diff(center.x);
-%   changeY = diff(center.y);
-%   changeXY = [sqrt(changeX.^2 + changeY.^2) 0];
-%
-%   stdstd = std(changeXY(idxLow:idxHigh));
-%   meanmean = mean(changeXY(idxLow:idxHigh));
-%   scaleStd = 2;
-%
-%
-%   figure(2)
-%
-%   hold on
-%     subplot(4,4,ii)
-%     plot(changeXY(10:end-10))
-%
-%     line([idxHigh idxHigh], [0 1]);
-%
-%     line([1 length(changeXY)], [meanmean meanmean])
-%
-%     line([1 length(changeXY)], [meanmean+stdstd*scaleStd meanmean+stdstd*scaleStd])
-%     line([1 length(changeXY)], [meanmean-stdstd*scaleStd meanmean-stdstd*scaleStd])
-%   hold off
-%   title('Center Point')
 
-  [R,C] = circleFilter2000(pospos,scale);
+  R = circleFilter2000(pospos,scale);
 
   figure(1)
   x = 1:length(R.radius);
@@ -89,41 +38,11 @@ for ii = 1:16
   hold off
 
 
-
   figure(2)
-  x = 1:length(C.dist);
-
   subplot(4,4,ii)
-  hold on
-    line([1 length(C.dist)], [C.mean C.mean])
-    line([1 length(C.dist)], [C.mean+C.std*C.devs C.mean+C.std*C.devs])
-    line([1 length(C.dist)], [C.mean-C.std*C.devs C.mean-C.std*C.devs])
-
-    plot(x,C.dist)
-    plot(x(C.idx),C.dist(C.idx),'*r')
-  hold off
-
-
-  % figure(1)
-  % x = 1:length(R.radius);
-  %
-  % hold on
-  %   line([1 length(R.radius)], [R.mean R.mean])
-  %   line([1 length(R.radius)], [R.mean+R.std*R.devs R.mean+R.std*R.devs])
-  %   line([1 length(R.radius)], [R.mean-R.std*R.devs R.mean-R.std*R.devs])
-  %
-  %   plot(x,R.radius)
-  %   plot(x(R.idx),R.radius(R.idx),'*r')
-  % hold off
-
-
-
-
-  % figure(3)
-  % subplot(4,4,ii)
-  % plot(pospos.x,pospos.y)
-  % axis equal
-  % title(strcat('Run: ',num2str(ii)))
+  plot(pospos.x,pospos.y)
+  axis equal
+  title(strcat('Run: ',num2str(ii)))
 
 
 % Outout(ii,1) = ii;

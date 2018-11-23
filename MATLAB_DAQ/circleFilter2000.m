@@ -1,23 +1,20 @@
-function [R,C] = circleFilter2000(pospos,scale)
+function [R] = circleFilter2000(pospos,scale)
 
   % Average 8 points, 4 forward and 4 backward
   aa = movmean(pospos.x,[4 4]);
   bb = movmean(pospos.y,[4 4]);
 
   % Use every 8th point to formulate a circle
-  posx = aa(1:5:end);
-  posy = bb(1:5:end);
+  posx = aa(1:8:end);
+  posy = bb(1:8:end);
 
   % Find the radius and center location based on 3 points spaced 8 apart
   for i = 1:length(posx) - 3
     ABC = [posx(i) posy(i); posx(i+1) posy(i+1); posx(i+2) posy(i+2)];
     [Radius(i) cent] = fit_circle_through_3_points(ABC);
-    center.x(i) = cent(1);
-    center.y(i) = cent(2);
   end
 
-  % Radius
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % Smooth out sharp peaks
   Radius = movmean(Radius,[2 2]);
 
   % Find location cut off for the bottom 25% of the data
@@ -41,30 +38,8 @@ function [R,C] = circleFilter2000(pospos,scale)
   % Convert index locations to a logical and add to structure
   R.idx = logical(indexR);
 
-
-  % Center
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  changeX = diff(center.x);
-  changeY = diff(center.y);
-  changeXY = [sqrt(changeX.^2 + changeY.^2) 0];
-
-  % Calculate mean and std. Set a scale for number of deviations
-  C.mean = mean(changeXY(1:idxHigh));
-  C.std = std(changeXY(1:idxHigh));
-  C.devs = 1.5;
-  C.dist = changeXY;
-
-  % Find center values thats dont fit in the std set
-  indexC = zeros(1,length(changeXY));
-
-  for ii = idxHigh:length(changeXY)
-    if (C.dist(ii) >= (C.mean + C.std*C.devs) || C.dist(ii) <= (C.mean - C.std*C.devs))
-      indexC(ii) = ii;
-    end
-  end
-
-  % Convert index locations to a logical and add to structure
-  C.idx = logical(indexC);
+  % Add scaled radius in meters
+  R.meters = R.radius*scale;
 
 end
 
