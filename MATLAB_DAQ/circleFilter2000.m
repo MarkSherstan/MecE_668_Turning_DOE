@@ -1,8 +1,8 @@
 function [R] = circleFilter2000(pospos,scale)
 
-  % Average 8 points, 4 forward and 4 backward
-  aa = movmean(pospos.x,[4 4]);
-  bb = movmean(pospos.y,[4 4]);
+  % Average 10 points, 5 forward and 5 backward
+  aa = movmean(pospos.x,[5 5]);
+  bb = movmean(pospos.y,[5 5]);
 
   % Use every 8th point to formulate a circle
   posx = aa(1:8:end);
@@ -44,7 +44,7 @@ function [R] = circleFilter2000(pospos,scale)
 end
 
 
-
+% https://www.mathworks.com/matlabcentral/fileexchange/57668-fit-circle-through-3-points
 function [R,xcyc] = fit_circle_through_3_points(ABC)
     % FIT_CIRCLE_THROUGH_3_POINTS
     % Mathematical background is provided in http://www.regentsprep.org/regents/math/geometry/gcg6/RCir.htm
