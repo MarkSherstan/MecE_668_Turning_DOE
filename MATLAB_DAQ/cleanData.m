@@ -28,9 +28,9 @@ function [dataOut] = cleanA(a,t)
     figure(1), hold on
 
     plot(t.seconds,a.x,'-r',t.seconds,a.y,'-g',t.seconds,a.z,'-b')
-    plot(t.seconds,dataOut.x,'-r','LineWidth',2.5)
-    plot(t.seconds,dataOut.y,'-g','LineWidth',2.5)
-    plot(t.seconds,dataOut.z,'-b','LineWidth',2.5)
+    plot(t.seconds,dataOut.x,'-r','LineWidth',4)
+    plot(t.seconds,dataOut.y,'-g','LineWidth',4)
+    plot(t.seconds,dataOut.z,'-b','LineWidth',4)
 
     title('Original Data and Filtered Data')
     ylabel('Acceleration [g]')

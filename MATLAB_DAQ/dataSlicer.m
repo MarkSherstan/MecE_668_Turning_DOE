@@ -19,17 +19,17 @@ function [a,w,t,pos,posResample] = dataSlicer(a,w,t,pos)
 
     subplot(2,1,1)
     hold on
-    plot(x2,magW,'--m')
-    plot([sliceLocationSensor(1) sliceLocationSensor(1)],ylim,'-k','LineWidth',2)
-    plot([sliceLocationSensor(2) sliceLocationSensor(2)],ylim,'-k','LineWidth',2)
+    plot(x2,magW,'--k','LineWidth',1.5)
+    plot([sliceLocationSensor(1) sliceLocationSensor(1)],ylim,'-r','LineWidth',3)
+    plot([sliceLocationSensor(2) sliceLocationSensor(2)],ylim,'-r','LineWidth',3)
     title('Slice Position of Sensor Data')
     hold off
 
     subplot(2,1,2)
     hold on
-    plot(x1,magPos,'--c')
-    plot([sliceLocationVideo(1) sliceLocationVideo(1)],ylim,'-k','LineWidth',2)
-    plot([sliceLocationVideo(2) sliceLocationVideo(2)],ylim,'-k','LineWidth',2)
+    plot(x1,magPos,'--k','LineWidth',1.5)
+    plot([sliceLocationVideo(1) sliceLocationVideo(1)],ylim,'-r','LineWidth',3)
+    plot([sliceLocationVideo(2) sliceLocationVideo(2)],ylim,'-r','LineWidth',3)
     title('Slice Position of Video Data')
     hold off
 
