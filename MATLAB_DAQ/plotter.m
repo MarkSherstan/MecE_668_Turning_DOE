@@ -1,10 +1,10 @@
 function [out] = plotter(pospos,aa,ww,tt,R)
 
-
 r = resample(R.meters,length(tt.seconds),length(R.meters))';
 slipIdx = round(min(find(R.idx))*(length(tt.seconds)/length(R.meters)));
 instantV = r .* ww.z * 0.0174533;
 out = instantV(slipIdx);
+
 
 
 
