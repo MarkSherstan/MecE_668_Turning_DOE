@@ -16,9 +16,9 @@ Values retrieved from the MPU-6050 Register Map and Descriptions Revision 4.2 lo
 ## Arduino
 
 * Accelerometer --> Outputs raw accelerometer values [acceleration in g force]
-* Gyroscope --> Outputs raw gyroscope values [angular velocity in deg/s] and includes a calibration
+* Gyroscope --> Outputs raw gyroscope values [angular velocity in deg/s] and includes a calibration sketch
 * SDLog --> Logs accelerometer and gyroscope values to SD card
-* Main --> Logs values to SD card and controls vehicle with a PWM signal
+* Main --> Logs accelerometer and gyroscope values to SD card and controls vehicle with a PWM signal
 
 ## MATLAB Data Acquisition and Processing
 
