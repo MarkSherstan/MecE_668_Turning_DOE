@@ -39,3 +39,14 @@ Raw data from sensor (.csv), videos (.mp4), and results (.mat) are included in s
 * Circuit_Layout --> Wiring layout using Fritzing
 * Calibration_Blobs --> Print at "actual size" and do not scale! Used for scale.m.
 * doeMatrixGen --> Calls Completed Experiments .csv to analyze remaining experiments to conduct.
+
+## Contribution
+
+* Miles Skinner
+* Dylan Rose
+* Jean-Luc Olsen
+* Olanrewaju Bello
+* Mark Sherstan
+
+## License
+[MIT License](https://choosealicense.com/licenses/mit/)
