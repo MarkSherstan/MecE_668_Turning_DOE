@@ -23,6 +23,7 @@ Values retrieved from the MPU-6050 Register Map and Descriptions Revision 4.2 lo
 ## MATLAB Data Acquisition and Processing
 
 Raw data from sensor (.csv), videos (.mp4), and results (.mat) are included in sub folder titled 'data'. To add additional data or reanalyze existing data the following scripts and functions can be used:
+
 * main --> Run this script to call all other MATLAB functions. Specify file names for reading here.
 * scale --> Find the ratio of pixels to meters in the real domain.
 * positionLogger --> Logs the x and y coordinates of the centroid of the tracking disk from a masking function.
@@ -37,3 +38,4 @@ Raw data from sensor (.csv), videos (.mp4), and results (.mat) are included in s
 
 * Circuit_Layout --> Wiring layout using Fritzing
 * Calibration_Blobs --> Print at "actual size" and do not scale! Used for scale.m.
+* doeMatrixGen --> Calls Completed Experiments .csv to analyze remaining experiments to conduct.
